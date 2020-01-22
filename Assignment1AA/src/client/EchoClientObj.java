@@ -47,7 +47,7 @@ public class EchoClientObj extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("LoginScreen.fxml"));
 			// BorderPane root = new BorderPane();
 			loginScene = new Scene(root, 400, 400);
-			loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			//loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			window.setScene(loginScene);
 			window.show();
 		} catch (Exception e) {
