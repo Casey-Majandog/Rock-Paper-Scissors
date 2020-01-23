@@ -5,6 +5,8 @@
  */
 package client;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
@@ -30,7 +32,7 @@ import java.util.*;
  * 
  */
 
-public class EchoClientObj extends Application {
+public class ClientGUI extends Application implements PropertyChangeListener {
 
 	Stage window;
 	Scene loginScene, menuScreen;
@@ -58,9 +60,8 @@ public class EchoClientObj extends Application {
 	public static void disconnectServer() {
 		
 	}
-	public static boolean connectServer(String user, String ip) {
-		String text = "";
-		String logOff = "";
+	
+	public boolean connectServer(String user, String ip) {
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
 		InputListener lis;
@@ -72,8 +73,11 @@ public class EchoClientObj extends Application {
 			// Create an object output stream to send the message to server.
 			OutputStream os = socket.getOutputStream();
 			oos = new ObjectOutputStream(os);
-			lis = new InputListener(socket);
+			lis = new InputListener(0,socket, this);
 			new Thread(lis).start();
+			List<PropertyChangeListener> observers = new ArrayList<>();
+			
+			
 			
 			
 			
@@ -117,4 +121,11 @@ public class EchoClientObj extends Application {
 //			e.printStackTrace();
 //		}
 	}
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

@@ -1,22 +1,34 @@
 package utility;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-public class InputListener implements Runnable {
+public class InputListener implements Runnable, PropertyChangeListener {
 	// attributes
 	private Socket socket;
 	private ObjectInputStream ois;
 	private int number;
+	private List<PropertyChangeListener> observers = new ArrayList<>();
 
-	public InputListener(Socket socket) {
+	
+	public InputListener(Socket socket, PropertyChangeListener observer) {
 		this.socket = socket;
+		observers.add(observer);
 	}
 
-	public InputListener(int number, Socket socket) {
+	public InputListener(int number, Socket socket, PropertyChangeListener observer) {
 		this.number = number;
 		this.socket = socket;
+	}
+	
+	public InputListener(List<PropertyChangeListener> o)
+	{
+	    
 	}
 
 	@Override
@@ -29,11 +41,28 @@ public class InputListener implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	private void sendMessage()
+	{
+	    
+	}
+	
+	private void readMessage()
+	{
+	    
+	}
 
-	// TODO Auto-generated method stubasdsad
-	// karmans edit test
-	// second karman post
-	// Yeet
-	// Yeet2
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 
 }
+
+
+
+
+
+

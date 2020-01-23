@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import client.EchoClientObj;
+import client.ClientGUI;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +34,7 @@ public class Container {
 
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
-		if (EchoClientObj.connectServer(displayName.getText(), serverIP.getText())) {
+		if (ClientGUI.connectServer(displayName.getText(), serverIP.getText())) {
 
 			Parent gameViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("client/GameScreen.fxml"));
 			Scene gameScene = new Scene(gameViewParent);

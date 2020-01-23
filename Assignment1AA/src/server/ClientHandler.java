@@ -1,6 +1,7 @@
 package server;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +11,7 @@ import java.util.Date;
 import utility.InputListener;
 import utility.Message;
 
-public class ClientHandler implements Runnable
+public class ClientHandler implements Runnable, PropertyChangeListener
 {
     //attributes
     private Socket socket1;
@@ -37,8 +38,8 @@ public class ClientHandler implements Runnable
             e.printStackTrace();
         }
         
-        lis1 = new InputListener(1, this.socket1);
-        lis2 = new InputListener(2, this.socket2);
+        lis1 = new InputListener(1, this.socket1, this);
+        lis2 = new InputListener(2, this.socket2, this);
 
         
     }
