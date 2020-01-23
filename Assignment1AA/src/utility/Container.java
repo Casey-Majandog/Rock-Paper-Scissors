@@ -34,7 +34,8 @@ public class Container {
 
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
-		if (ClientGUI.connectServer(displayName.getText(), serverIP.getText())) {
+		ClientGUI client = new ClientGUI();
+		if (client.connectServer(displayName.getText(), serverIP.getText())) {
 
 			Parent gameViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("client/GameScreen.fxml"));
 			Scene gameScene = new Scene(gameViewParent);
