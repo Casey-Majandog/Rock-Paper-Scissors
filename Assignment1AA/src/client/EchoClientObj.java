@@ -46,7 +46,7 @@ public class EchoClientObj extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("LoginScreen.fxml"));
 			// BorderPane root = new BorderPane();
-			loginScene = new Scene(root, 400, 400);
+			loginScene = new Scene(root, 400, 200);
 			//loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			window.setScene(loginScene);
 			window.show();
@@ -66,7 +66,6 @@ public class EchoClientObj extends Application {
 		InputListener lis;
 
 		try {
-			// int pn = Integer.parseInt(JOptionPane.showInputDialog("Enter port number"));
 
 			Socket socket = new Socket(ip, 3333);
 
