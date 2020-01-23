@@ -1,35 +1,39 @@
 package utility;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class InputListener implements Runnable
-{
-    //attributes
-    private Socket socket;
-    private ObjectInputStream ois;
-    private int number;
-    
-    public InputListener(Socket socket)
-    {
-        this.socket = socket;
-    }
-    
-    public InputListener(int number, Socket socket)
-    {
-        this.number = number;
-        this.socket = socket;
-    }
-    
-    @Override
-    public void run()
-    {
-        // TODO Auto-generated method stubasdsad
-    	//karmans edit test
-    	//second karman post
-        //Yeet
-        //Yeet2
-        
-    }
+public class InputListener implements Runnable {
+	// attributes
+	private Socket socket;
+	private ObjectInputStream ois;
+	private int number;
+
+	public InputListener(Socket socket) {
+		this.socket = socket;
+	}
+
+	public InputListener(int number, Socket socket) {
+		this.number = number;
+		this.socket = socket;
+	}
+
+	@Override
+	public void run() {
+
+		try {
+			ois = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	// TODO Auto-generated method stubasdsad
+	// karmans edit test
+	// second karman post
+	// Yeet
+	// Yeet2
 
 }

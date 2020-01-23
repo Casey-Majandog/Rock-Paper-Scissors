@@ -73,6 +73,9 @@ public class EchoClientObj extends Application {
 			// Create an object output stream to send the message to server.
 			OutputStream os = socket.getOutputStream();
 			oos = new ObjectOutputStream(os);
+			lis = new InputListener(socket);
+			new Thread(lis).start();
+			
 			
 			
 			//gui is the listener
