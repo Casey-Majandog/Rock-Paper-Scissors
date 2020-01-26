@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputListener implements Runnable, PropertyChangeListener {
+public class InputListener implements Runnable {
 	// attributes
 	private Socket socket;
 	private ObjectInputStream ois;
@@ -36,10 +36,17 @@ public class InputListener implements Runnable, PropertyChangeListener {
 
 		try {
 			ois = new ObjectInputStream(socket.getInputStream());
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
+	}
+	
+	
+	private void notifyListener()
+	{
+	    
 	}
 	
 	private void sendMessage()
@@ -52,12 +59,6 @@ public class InputListener implements Runnable, PropertyChangeListener {
 	    
 	}
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-        // TODO Auto-generated method stub
-        
-    }
 
 }
 

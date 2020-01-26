@@ -49,7 +49,6 @@ public class ClientHandler implements Runnable, PropertyChangeListener
     @Override
     public void run()
     {
-       
         
         new Thread(lis1).start();
         new Thread(lis2).start();
