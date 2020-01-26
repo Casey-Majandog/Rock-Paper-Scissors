@@ -1,7 +1,6 @@
 package utility;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -15,38 +14,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class Container {
-    //Attributes
+
 	@FXML
-	private Button clearButton, connectButton, send;
+	private Button clearButton, connectButton;
 	@FXML
 	private TextField displayName, serverIP;
-    @FXML
-    private MenuItem quitMenu;
-    @FXML
-    public TextArea chat, msg;
-    
-    private ClientGUI client;
-    
-    private Message message;
-    
-    private String userName;
-    
-    
-    //Methods
-    @FXML
-    private void printMessage(ActionEvent e)
-    {
-        Date timeStamp = new Date();
-        System.out.println(userName);
-        message = new Message(userName, msg.getText(), timeStamp);
-        
-        chat.appendText(message + "\n");
-    } 
+	@FXML
+	private MenuItem quitMenu;
 
 	@FXML
 	public void handleClearButtonAction(ActionEvent event) {
@@ -56,9 +34,9 @@ public class Container {
 
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
-		client = new ClientGUI();
+		ClientGUI client = new ClientGUI();
 		if (client.connectServer(displayName.getText(), serverIP.getText())) {
-		    System.out.println(userName);
+
 			Parent gameViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("client/GameScreen.fxml"));
 			Scene gameScene = new Scene(gameViewParent);
 
@@ -69,7 +47,6 @@ public class Container {
 		} else {
 			System.out.println("error");
 		}
-		userName = displayName.getText();
 	}
 
 	@FXML

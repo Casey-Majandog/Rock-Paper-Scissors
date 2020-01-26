@@ -15,9 +15,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import utility.Container;
 import utility.InputListener;
 import utility.Message;
 
@@ -38,8 +36,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	Stage window;
 	Scene loginScene, menuScreen;
-	
-	Container container;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -60,7 +56,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public static void disconnectServer() {
 		
@@ -80,7 +75,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			oos = new ObjectOutputStream(os);
 			lis = new InputListener(0,socket, this);
 			new Thread(lis).start();
-
+			List<PropertyChangeListener> observers = new ArrayList<>();
 			
 			
 			
