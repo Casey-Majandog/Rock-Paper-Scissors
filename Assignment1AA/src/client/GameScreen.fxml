@@ -11,7 +11,7 @@
    <children>
       <TextArea fx:id="chat" accessibleRole="HYPERLINK" editable="false" layoutX="378.0" layoutY="40.0" prefHeight="229.0" prefWidth="200.0" wrapText="true" />
       <TextArea fx:id="msg" layoutX="378.0" layoutY="280.0" prefHeight="64.0" prefWidth="200.0" promptText="Enter message" wrapText="true" />
-      <Button fx:id="send" layoutX="379.0" layoutY="353.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Send" />
+      <Button fx:id="send" layoutX="379.0" layoutY="353.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Send" onAction="#printMessage"/>
       <Text layoutX="379.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chat" wrappingWidth="60.392578125" />
       <Button contentDisplay="GRAPHIC_ONLY" layoutX="28.0" layoutY="270.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="95.0" text="Rock">
          <graphic>
