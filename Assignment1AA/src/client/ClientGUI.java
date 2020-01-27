@@ -90,7 +90,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
 		InputListener lis;
-
+		System.out.println("In connectServer Method");
 		try {
 
 			Socket socket = new Socket(ip, 3333);
@@ -101,6 +101,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			oos = new ObjectOutputStream(os);
 			lis = new InputListener(0, socket, this);
 			new Thread(lis).start();
+			System.out.println("after thread start in connectServer");
 
 			// gui is the listener
 //

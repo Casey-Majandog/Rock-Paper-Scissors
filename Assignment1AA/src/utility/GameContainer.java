@@ -16,6 +16,8 @@ public class GameContainer implements Initializable
     public TextArea chat, msg;
     
     private Message message1;
+    
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -28,11 +30,10 @@ public class GameContainer implements Initializable
     private void printMessage(ActionEvent e)
     {
         Date timeStamp = new Date();
-       message1.setMsg(msg.getText());
-       // message2 = new Message(message2.getUser(), msg.getText(), timeStamp); 
+        message1.setMsg(msg.getText()); 
         String msgChat = message1.getUser() + ": " + message1.getMsg() + " @ " + message1.getTimeStamp() + "\n";
-//        String msgChat = message1.getUser();
         chat.appendText(msgChat);
+        
     }
     
     public void initializeMessage(Message message)
