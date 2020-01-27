@@ -53,10 +53,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	@FXML
 	public TextArea chat, msg;
 
-	private ClientGUI client;
-
-	private Message message;
-
 	public String userName;
 
 	Container container;
@@ -70,7 +66,12 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	public void start(Stage primaryStage) {
 		window = primaryStage;
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("LoginScreen.fxml"));
+
+		    FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));               
+//            loader.setLocation(getClass().getResource("client/GameScreen.fxml"));
+            
+            Parent root = loader.load();
+//			Parent root = FXMLLoader.load(getClass().getResource("LoginScreen.fxml"));
 			// BorderPane root = new BorderPane();
 			loginScene = new Scene(root, 400, 200);
 			// loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -79,25 +80,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@FXML
-	public void handleConnectButtonAction(ActionEvent event) throws IOException {
-		if (connectServer(displayName.getText(), serverIP.getText())) {
-			System.out.println("DISPLAY NAME TEST: "+displayName.getText());
-			userName = displayName.getText();
-			Parent gameViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("client/GameScreen.fxml"));
-			Scene gameScene = new Scene(gameViewParent);
-
-			// get existing window from loginScene
-			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			window.setScene(gameScene);
-			window.show();
-		} else {
-			System.out.println("error");
-		}
-
-		System.out.println(userName);
 	}
 
 	public static void disconnectServer() {
@@ -164,16 +146,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
-
-	}
-
-	@FXML
-	private void printMessage(ActionEvent e) {
-		Date timeStamp = new Date();
-		System.out.println(userName);
-		message = new Message(userName, msg.getText(), timeStamp);
-
-		chat.appendText(message + "\n");
 	}
 
 	@FXML
