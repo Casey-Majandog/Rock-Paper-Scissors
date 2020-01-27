@@ -24,6 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utility.Container;
+import utility.GameContainer;
 import utility.InputListener;
 import utility.Message;
 
@@ -68,11 +69,9 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		try {
 
 		    FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));               
-//            loader.setLocation(getClass().getResource("client/GameScreen.fxml"));
             
             Parent root = loader.load();
-//			Parent root = FXMLLoader.load(getClass().getResource("LoginScreen.fxml"));
-			// BorderPane root = new BorderPane();
+
 			loginScene = new Scene(root, 400, 200);
 			// loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			window.setScene(loginScene);
@@ -90,7 +89,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
 		InputListener lis;
-		System.out.println("In connectServer Method");
 		try {
 
 			Socket socket = new Socket(ip, 3333);
@@ -101,33 +99,8 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			oos = new ObjectOutputStream(os);
 			lis = new InputListener(0, socket, this);
 			new Thread(lis).start();
-			System.out.println("after thread start in connectServer");
+			
 
-			// gui is the listener
-//
-//			// Create an object input stream to catch the echo message
-//			// from the server
-//			InputStream is = socket.getInputStream();
-//			ois = new ObjectInputStream(is);
-
-//			while (!logOff.equals("quit")) {
-//
-//				text = JOptionPane.showInputDialog("Enter Message");
-//
-//				Message msg = new Message(user, text, new Date());
-//
-//				oos.writeObject(msg);
-//
-//				msg = (Message) ois.readObject();
-//				JOptionPane.showMessageDialog(null, msg.toString());
-//
-//				logOff = JOptionPane.showInputDialog("Enter \"quit\" to end connection");
-//			}
-//
-//			// close all sockets and streams
-//			socket.close();
-//			ois.close();
-//			oos.close();
 			System.out.println("CONNECTED");
 			if (socket.isConnected()) {
 				return true;
@@ -146,7 +119,10 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
+	    
+	    
+        
+       
 	}
 
 	@FXML

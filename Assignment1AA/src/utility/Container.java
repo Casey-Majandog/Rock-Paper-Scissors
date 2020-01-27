@@ -40,17 +40,6 @@ public class Container {
     
     
     //Methods
-    @FXML
-    private void printMessage(ActionEvent e)
-    {
-        Date timeStamp = new Date();
-       
-       // message2 = new Message(message2.getUser(), msg.getText(), timeStamp); 
-      //  String msgChat = message1.getUser() + ": " + message1.getMsg() + " @ " + message1.getTimeStamp() + "\n";
-        String msgChat = message1.getUser();
-        chat.appendText(msgChat);
-    } 
-
 	@FXML
 	public void handleClearButtonAction(ActionEvent event) {
 		displayName.setText("");
@@ -63,17 +52,10 @@ public class Container {
 		String getUsername = null;
 		if (client.connectServer(displayName.getText(), serverIP.getText())) {
 		    getUsername = displayName.getText();
-		    System.out.println(getUsername);
 		    
 		    Date timeStamp = new Date();
 		    
 		    Message newMessage = new Message(getUsername, null, timeStamp); 
-		    
-		    System.out.println(newMessage.toString());
-		    
-		    
-		    
-//		    initializeMessage(newMessage);
 		    
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        
 			loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
@@ -88,7 +70,7 @@ public class Container {
 			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			window.setScene(gameScene);
 			window.show();
-			System.out.println("Username after loop: " + newMessage.getUser());
+
 		} else {
 			System.out.println("error");
 		}

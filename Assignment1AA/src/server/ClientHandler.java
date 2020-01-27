@@ -56,9 +56,9 @@ public class ClientHandler implements Runnable, PropertyChangeListener
        
     }
     
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(PropertyChangeEvent event)
     {
-        evt.getPropertyName();
+        String message = (String) event.getPropertyName();
     }
 
 }

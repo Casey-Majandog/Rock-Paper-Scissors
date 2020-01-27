@@ -27,10 +27,11 @@ public class GameContainer implements Initializable
     }
     
     @FXML
-    private void printMessage(ActionEvent e)
+    public void printMessage(ActionEvent e)
     {
         Date timeStamp = new Date();
-        message1.setMsg(msg.getText()); 
+        message1.setMsg(msg.getText());
+        message1.setTimeStamp(timeStamp);
         String msgChat = message1.getUser() + ": " + message1.getMsg() + " @ " + message1.getTimeStamp() + "\n";
         chat.appendText(msgChat);
         
@@ -38,11 +39,7 @@ public class GameContainer implements Initializable
     
     public void initializeMessage(Message message)
     {
-//      message1.setMsg(message.getMsg());
-//      message1.setTimeStamp(message.getTimeStamp());
-//      message1.setUser(message.getUser());
-        message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
-        System.out.println("Message has been set: " + message1.toString());
+        message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());;
     }
 
 }

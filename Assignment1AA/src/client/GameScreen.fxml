@@ -17,7 +17,7 @@
          <graphic>
             <ImageView fx:id="rock" accessibleRole="BUTTON" fitHeight="77.0" fitWidth="86.0">
                <image>
-                  <Image url="@../../../../../eclipse-workspace/JavaFXWizTest/src/application/rock.png" />
+                  <Image url="@rock.png" />
                </image>
             </ImageView>
          </graphic>
@@ -26,7 +26,7 @@
          <graphic>
             <ImageView fx:id="paper" fitHeight="77.0" fitWidth="90.0">
                <image>
-                  <Image url="@../../../../../eclipse-workspace/JavaFXWizTest/src/application/paper.png" />
+                  <Image url="@paper.png" />
                </image>
             </ImageView>
          </graphic>
@@ -35,7 +35,7 @@
          <graphic>
             <ImageView fx:id="scissors" fitHeight="69.0" fitWidth="82.0">
                <image>
-                  <Image url="@../../../../../eclipse-workspace/JavaFXWizTest/src/application/scissors.jpg" />
+                  <Image url="@scissors.jpg" />
                </image>
             </ImageView>
          </graphic>

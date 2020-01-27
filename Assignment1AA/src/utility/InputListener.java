@@ -26,6 +26,7 @@ public class InputListener implements Runnable {
 	public InputListener(int number, Socket socket, PropertyChangeListener observer) {
 		this.number = number;
 		this.socket = socket;
+		observers.add(observer);
 	}
 	
 	public InputListener(List<PropertyChangeListener> o)
@@ -39,15 +40,13 @@ public class InputListener implements Runnable {
 		try {
 		    
 			ois = new ObjectInputStream(socket.getInputStream());
-			System.out.println("Input listener Run");
-			notifyListeners(new Message("User2", "Yeet", null));
 		     //GUI will be the loop for the assignment
             while(true)
             {
                 //comment
                 //Read input from client
                 Message msg = (Message)ois.readObject();
-//                System.out.println(msg);
+                System.out.println(msg);
                 //Echo message back to client with updated time stamp.
                 msg.setTimeStamp(new Date());
                 
@@ -76,15 +75,6 @@ public class InputListener implements Runnable {
         }
     }
 	
-	private void sendMessage()
-	{
-	    
-	}
-	
-	private void readMessage()
-	{
-	    
-	}
 
 
 }
