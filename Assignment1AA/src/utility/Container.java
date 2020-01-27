@@ -42,9 +42,8 @@ public class Container {
     private void printMessage(ActionEvent e)
     {
         Date timeStamp = new Date();
-        System.out.println(userName);
-        message = new Message(userName, msg.getText(), timeStamp);
-        
+        System.out.println("Username is print Messeage method: " + userName);
+        message = new Message(userName, msg.getText(), timeStamp); 
         chat.appendText(message + "\n");
     } 
 
@@ -55,10 +54,13 @@ public class Container {
 	}
 
 	@FXML
-	public void handleConnectButtonAction(ActionEvent event) throws IOException {
+	public String handleConnectButtonAction(ActionEvent event) throws IOException {
 		client = new ClientGUI();
+		String getUsername =
+        null;
 		if (client.connectServer(displayName.getText(), serverIP.getText())) {
-		    System.out.println(userName);
+		    getUsername = displayName.getText();
+		    System.out.println(getUsername);
 			Parent gameViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("client/GameScreen.fxml"));
 			Scene gameScene = new Scene(gameViewParent);
 
@@ -69,7 +71,9 @@ public class Container {
 		} else {
 			System.out.println("error");
 		}
-		userName = displayName.getText();
+		System.out.println("Username after loop: " + getUsername);
+        return userName = getUsername;
+		
 	}
 
 	@FXML
