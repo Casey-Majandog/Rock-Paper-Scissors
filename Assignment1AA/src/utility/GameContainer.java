@@ -1,9 +1,11 @@
 package utility;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import client.ClientGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,14 +29,15 @@ public class GameContainer implements Initializable
     }
     
     @FXML
-    public void printMessage(ActionEvent e)
+    public void printMessage(ActionEvent e) throws IOException
     {
+        
         Date timeStamp = new Date();
         message1.setMsg(msg.getText());
         message1.setTimeStamp(timeStamp);
         String msgChat = message1.getUser() + ": " + message1.getMsg() + " @ " + message1.getTimeStamp() + "\n";
         chat.appendText(msgChat);
-        
+           
     }
     
     public void initializeMessage(Message message)

@@ -57,6 +57,10 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	public String userName;
 
 	Container container;
+	
+	ObjectOutputStream oos = null;
+    ObjectInputStream ois = null;
+    InputListener lis;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -86,9 +90,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	}
 
 	public boolean connectServer(String user, String ip) {
-		ObjectOutputStream oos = null;
-		ObjectInputStream ois = null;
-		InputListener lis;
+		
 		try {
 
 			Socket socket = new Socket(ip, 3333);
@@ -115,6 +117,12 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 //		 catch (ClassNotFoundException e) {
 //			e.printStackTrace();
 //		}
+	}
+	
+	public void writeMessage(Object msg) throws IOException
+	{
+	    System.out.println(msg);
+	    oos.writeObject(msg);
 	}
 
 	@Override
