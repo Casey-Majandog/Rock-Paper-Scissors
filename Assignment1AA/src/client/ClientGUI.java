@@ -12,10 +12,16 @@ import java.net.*;
 import javax.swing.*;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utility.Container;
 import utility.InputListener;
@@ -38,7 +44,21 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	Stage window;
 	Scene loginScene, menuScreen;
-	
+	@FXML
+	private Button clearButton, connectButton, send;
+	@FXML
+	private TextField displayName, serverIP;
+	@FXML
+	private MenuItem quitMenu;
+	@FXML
+	public TextArea chat, msg;
+
+	private ClientGUI client;
+
+	private Message message;
+
+	public String userName;
+
 	Container container;
 
 	public static void main(String[] args) {
@@ -53,19 +73,37 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			Parent root = FXMLLoader.load(getClass().getResource("LoginScreen.fxml"));
 			// BorderPane root = new BorderPane();
 			loginScene = new Scene(root, 400, 200);
-			//loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			// loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			window.setScene(loginScene);
 			window.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@FXML
+	public void handleConnectButtonAction(ActionEvent event) throws IOException {
+		if (connectServer(displayName.getText(), serverIP.getText())) {
+			System.out.println("DISPLAY NAME TEST: "+displayName.getText());
+			userName = displayName.getText();
+			Parent gameViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("client/GameScreen.fxml"));
+			Scene gameScene = new Scene(gameViewParent);
+
+			// get existing window from loginScene
+			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			window.setScene(gameScene);
+			window.show();
+		} else {
+			System.out.println("error");
+		}
+
+		System.out.println(userName);
+	}
 
 	public static void disconnectServer() {
-		
+
 	}
-	
+
 	public boolean connectServer(String user, String ip) {
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
@@ -74,19 +112,15 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		try {
 
 			Socket socket = new Socket(ip, 3333);
+			userName = user;
 
 			// Create an object output stream to send the message to server.
 			OutputStream os = socket.getOutputStream();
 			oos = new ObjectOutputStream(os);
-			lis = new InputListener(0,socket, this);
+			lis = new InputListener(0, socket, this);
 			new Thread(lis).start();
 
-			
-			
-			
-			
-			
-			//gui is the listener
+			// gui is the listener
 //
 //			// Create an object input stream to catch the echo message
 //			// from the server
@@ -114,7 +148,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			System.out.println("CONNECTED");
 			if (socket.isConnected()) {
 				return true;
-			} 
+			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -127,10 +161,24 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 //		}
 	}
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-        // TODO Auto-generated method stub
-        
-    }
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@FXML
+	private void printMessage(ActionEvent e) {
+		Date timeStamp = new Date();
+		System.out.println(userName);
+		message = new Message(userName, msg.getText(), timeStamp);
+
+		chat.appendText(message + "\n");
+	}
+
+	@FXML
+	public void handleClearButtonAction(ActionEvent event) {
+		displayName.setText("");
+		serverIP.setText("");
+	}
 }
