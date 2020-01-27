@@ -58,7 +58,25 @@ public class ClientHandler implements Runnable, PropertyChangeListener
     
     public void propertyChange(PropertyChangeEvent event)
     {
-        String message = (String) event.getPropertyName();
+       InputListener lis = (InputListener) event.getSource();
+       if (lis.getNumber() == 1) {
+    	   try {
+    		   System.out.println("client handler if number 1");
+			oos2.writeObject(event.getNewValue());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	   
+       } else {
+    	   try {
+    		   System.out.println("client handler if number 2");
+			oos1.writeObject(event.getNewValue());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       }
     }
 
 }

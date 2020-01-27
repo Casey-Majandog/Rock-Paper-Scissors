@@ -45,10 +45,13 @@ public class InputListener implements Runnable {
             {
                 //comment
                 //Read input from client
-                Message msg = (Message)ois.readObject();
+            	System.out.println("b4 readOjbect");
+                Object msg = (Message)ois.readObject();
                 System.out.println(msg);
                 //Echo message back to client with updated time stamp.
-                msg.setTimeStamp(new Date());
+                ((Message) msg).setTimeStamp(new Date());
+                System.out.println("input listener b4 notifyListeners(msg)");
+                notifyListeners(msg);
                 
      
                 
@@ -66,7 +69,15 @@ public class InputListener implements Runnable {
 	}
 	
 	
-    private void notifyListeners(Message msg)
+    public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	private void notifyListeners(Object msg)
     {
         for( PropertyChangeListener observer : observers )
         {

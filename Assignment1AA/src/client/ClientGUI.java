@@ -120,7 +120,8 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 	    
-	    
+		System.out.println("b4 property change in clientGUI");
+	    msg.appendText(((Message)evt.getNewValue()).toString());
         
        
 	}
