@@ -44,6 +44,7 @@ public class InputListener implements Runnable {
 		     //GUI will be the loop for the assignment
             while(true)
             {
+                //comment
                 //Read input from client
                 Message msg = (Message)ois.readObject();
 //                System.out.println(msg);
