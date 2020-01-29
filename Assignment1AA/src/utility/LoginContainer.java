@@ -19,7 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class Container {
+public class LoginContainer {
     //Attributes
 	@FXML
 	private Button clearButton, connectButton, send;
@@ -33,8 +33,11 @@ public class Container {
 //    private Message message1, message2;
     @FXML
     private Message message1;
-    @FXML
-    private String userName ="No user";
+    
+	@FXML
+    private String userName;
+    FXMLLoader loader;
+    GameContainer gameContainer;
     
     
     //Methods
@@ -46,10 +49,10 @@ public class Container {
 
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
-		client = new ClientGUI();
 		String getUsername = null;
-		if (client.connectServer(displayName.getText(), serverIP.getText())) {
-		    getUsername = displayName.getText();
+		client = initializeClient();
+		if (client.connectServer(displayName.getText(), serverIP.getText(), client)) {
+		    setUserName(displayName.getText());
 		    
 		    Date timeStamp = new Date();
 		    
@@ -61,9 +64,10 @@ public class Container {
 			Parent gameViewParent = loader.load();
 			Scene gameScene = new Scene(gameViewParent);
 			
-			GameContainer controller = loader.getController();
-			controller.initializeMessage(newMessage);
-			controller.getClient(client);
+			gameContainer = loader.getController();
+			gameContainer.initializeMessage(newMessage);
+			gameContainer.setClient(client);
+			client.setGameContainer(gameContainer);
 
 			// get existing window from loginScene
 			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -75,6 +79,11 @@ public class Container {
 		}
 		   
 		
+	}
+	
+	public ClientGUI initializeClient() {
+		ClientGUI client = new ClientGUI();
+		return client;
 	}
 
 	@FXML
@@ -97,5 +106,22 @@ public class Container {
 	    message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
 	    System.out.println("Message has been set: " + message1.toString());
 	}
+
+	public FXMLLoader getLoader() {
+		return loader;
+	}
+
+	public void setLoader(FXMLLoader loader) {
+		this.loader = loader;
+	}
+	
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 
 }
