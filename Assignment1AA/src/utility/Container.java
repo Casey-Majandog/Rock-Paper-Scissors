@@ -28,8 +28,6 @@ public class Container {
     @FXML
     private MenuItem quitMenu;
     @FXML
-    public TextArea chat, msg;
-    @FXML
     private ClientGUI client;
     
 //    private Message message1, message2;
@@ -65,6 +63,7 @@ public class Container {
 			
 			GameContainer controller = loader.getController();
 			controller.initializeMessage(newMessage);
+			controller.getClient(client);
 
 			// get existing window from loginScene
 			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

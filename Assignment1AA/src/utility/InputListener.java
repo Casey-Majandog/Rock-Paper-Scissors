@@ -43,14 +43,12 @@ public class InputListener implements Runnable {
 		     //GUI will be the loop for the assignment
             while(true)
             {
-                //comment
                 //Read input from client
-            	System.out.println("b4 readOjbect");
                 Object msg = (Message)ois.readObject();
-                System.out.println(msg);
                 //Echo message back to client with updated time stamp.
                 ((Message) msg).setTimeStamp(new Date());
                 System.out.println("input listener b4 notifyListeners(msg)");
+                //Notify listeners broken
                 notifyListeners(msg);
                 
      
@@ -77,7 +75,7 @@ public class InputListener implements Runnable {
 		this.number = number;
 	}
 
-	private void notifyListeners(Object msg)
+	public void notifyListeners(Object msg)
     {
         for( PropertyChangeListener observer : observers )
         {

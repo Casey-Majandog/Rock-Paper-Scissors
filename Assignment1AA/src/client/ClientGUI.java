@@ -61,6 +61,8 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	ObjectOutputStream oos = null;
     ObjectInputStream ois = null;
     InputListener lis;
+    
+    FXMLLoader loader;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -72,7 +74,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		window = primaryStage;
 		try {
 
-		    FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));               
+		    loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));               
             
             Parent root = loader.load();
 
@@ -129,9 +131,22 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 	    
 		System.out.println("b4 property change in clientGUI");
-	    msg.appendText(((Message)evt.getNewValue()).toString());
+		System.out.println(((Message)evt.getNewValue()).toString());
+		//New added line to append message object to other players GUI
+		loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));
+		loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
+		try
+        {
+            loader.load();
+        } catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		GameContainer controller = loader.getController();
+		controller.appendMessage((Message)evt.getNewValue());
+		//controller.getChat().appendText(((Message)evt.getNewValue()).toString());
         
-       
 	}
 
 	@FXML
