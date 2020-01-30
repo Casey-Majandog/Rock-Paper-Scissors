@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import client.ClientGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 
@@ -21,7 +20,6 @@ public class GameContainer implements Initializable
     private Message message1;
     
     ClientGUI client;
-    FXMLLoader loader;
     
 
     @Override
@@ -34,7 +32,7 @@ public class GameContainer implements Initializable
     @FXML
     public void printMessage(ActionEvent e) throws IOException
     {
-    	message1 = new Message();
+        
         Date timeStamp = new Date();
         message1.setMsg(msg.getText());
         message1.setTimeStamp(timeStamp);
@@ -68,27 +66,19 @@ public class GameContainer implements Initializable
     public void appendMessage(Message msg)
     {
         String msgChat = msg.getUser() + ": " + msg.getMsg() + " @ " + msg.getTimeStamp() + "\n";
-        chat.appendText(msg.toString());
-        chat.appendText("asfdzfhdgv");
+        chat.appendText(msgChat);
+        
     }
     
     public void initializeMessage(Message message)
     {
         message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
     }
-       
-    public void setClient(ClientGUI client) {
-    	this.client = client;
+    
+    public void getClient(Object newClient)
+    {
+        this.client = (ClientGUI) newClient;
     }
-
-	public FXMLLoader getLoader() {
-		return loader;
-	}
-
-	public void setLoader(FXMLLoader loader) {
-		this.loader = loader;
-	}
-   
     
     
 

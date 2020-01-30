@@ -23,7 +23,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import utility.LoginContainer;
+import utility.Container;
 import utility.GameContainer;
 import utility.InputListener;
 import utility.Message;
@@ -56,31 +56,27 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	public String userName;
 
-	LoginContainer loginContainer;
-	GameContainer gameContainer;
+	Container container;
+	
+	GameContainer controller;
 	
 	ObjectOutputStream oos = null;
     ObjectInputStream ois = null;
     InputListener lis;
-	FXMLLoader loader;
-    GameContainer controller;
-    ClientGUI client;
     
-    public ClientGUI getClient() {
-		return client;
-	}
+    FXMLLoader loader;
 
-	public void setClient(ClientGUI client) {
-		this.client = client;
-	}
+	public static void main(String[] args) {
+		launch(args);
 
+	}
 
 	@Override
 	public void start(Stage primaryStage) {
 		window = primaryStage;
 		try {
 
-		    loader = new FXMLLoader(getClass().getResource("GameScreen.fxml"));               
+		    loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));               
             
             Parent root = loader.load();
 
@@ -97,9 +93,10 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	}
 
-	public boolean connectServer(String user, String ip, ClientGUI client) {
-		this.client = client;
+	public boolean connectServer(String user, String ip) {
+		
 		try {
+
 			Socket socket = new Socket(ip, 3333);
 			userName = user;
 
@@ -112,8 +109,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 			System.out.println("CONNECTED");
 			if (socket.isConnected()) {
-				
-			
 				return true;
 			}
 		} catch (UnknownHostException e) {
@@ -128,28 +123,30 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 //		}
 	}
 	
+	public GameContainer getController()
+	{
+	    return controller;
+	}
+	
+	public void setController(GameContainer controller)
+	{
+	    this.controller = controller;
+	}
+	
 	public void writeMessage(Object msg) throws IOException
 	{
 	    System.out.println(msg);
 	    oos.writeObject(msg);
 	}
-	
-	public GameContainer getGameContainer(GameContainer gameContainer) {
-		return gameContainer;
-		
-	}
-	
-	public void setGameContainer(GameContainer gameContainer) {
-		this.gameContainer = gameContainer;
-		
-	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+	    
 		System.out.println("b4 property change in clientGUI");
 		System.out.println(((Message)evt.getNewValue()).toString());
 		//New added line to append message object to other players GUI
-		gameContainer.appendMessage((Message)evt.getNewValue());
+		GameContainer controller = getController();
+		controller.appendMessage((Message)evt.getNewValue());
 		//controller.getChat().appendText(((Message)evt.getNewValue()).toString());
         
 	}
@@ -159,6 +156,4 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		displayName.setText("");
 		serverIP.setText("");
 	}
-	
-	
 }
