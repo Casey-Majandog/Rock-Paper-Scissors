@@ -19,7 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class LoginContainer {
+public class Container {
     //Attributes
 	@FXML
 	private Button clearButton, connectButton, send;
@@ -33,11 +33,8 @@ public class LoginContainer {
 //    private Message message1, message2;
     @FXML
     private Message message1;
-    
-	@FXML
-    private String userName;
-    FXMLLoader loader;
-    GameContainer gameContainer;
+    @FXML
+    private String userName ="No user";
     
     
     //Methods
@@ -49,13 +46,12 @@ public class LoginContainer {
 
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
+		client = new ClientGUI();
 		String getUsername = null;
-		client = initializeClient();
-		if (client.connectServer(displayName.getText(), serverIP.getText(), client)) {
-		    setUserName(displayName.getText());
+		if (client.connectServer(displayName.getText(), serverIP.getText())) {
+		    getUsername = displayName.getText();
 		    
 		    Date timeStamp = new Date();
-		    
 		    Message newMessage = new Message(getUsername, null, timeStamp); 
 		    
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        
@@ -63,11 +59,12 @@ public class LoginContainer {
 			
 			Parent gameViewParent = loader.load();
 			Scene gameScene = new Scene(gameViewParent);
+			GameContainer controller = loader.getController();
 			
-			gameContainer = loader.getController();
-			gameContainer.initializeMessage(newMessage);
-			gameContainer.setClient(client);
-			client.setGameContainer(gameContainer);
+			controller.initializeMessage(newMessage);
+			controller.getClient(client);
+			controller.setPlayer1(getUsername);
+			client.setController(controller);
 
 			// get existing window from loginScene
 			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -75,15 +72,10 @@ public class LoginContainer {
 			window.show();
 
 		} else {
-			System.out.println("error");
+			System.out.println("Server not up");
 		}
 		   
 		
-	}
-	
-	public ClientGUI initializeClient() {
-		ClientGUI client = new ClientGUI();
-		return client;
 	}
 
 	@FXML
@@ -100,28 +92,8 @@ public class LoginContainer {
 	
 	public void initializeMessage(Message message)
 	{
-//	    message1.setMsg(message.getMsg());
-//	    message1.setTimeStamp(message.getTimeStamp());
-//	    message1.setUser(message.getUser());
 	    message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
 	    System.out.println("Message has been set: " + message1.toString());
 	}
-
-	public FXMLLoader getLoader() {
-		return loader;
-	}
-
-	public void setLoader(FXMLLoader loader) {
-		this.loader = loader;
-	}
-	
-    public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	
 
 }

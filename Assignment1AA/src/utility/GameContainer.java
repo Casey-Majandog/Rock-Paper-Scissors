@@ -112,8 +112,6 @@ public class GameContainer implements Initializable
         this.socketNum = socketNum;
     }
     
-    
-    
     public void appendMessage(Message msg)
     {
         String msgChat = "["+ msg.getTimeStamp().getHours() + ":" + msg.getTimeStamp().getMinutes() + ":" + msg.getTimeStamp().getSeconds() + "] " +msg.getUser() + ": " + msg.getMsg() + "\n";
