@@ -44,22 +44,15 @@ public class InputListener implements Runnable {
             while(true)
             {
                 //Read input from client
-                Object msg = (Message)ois.readObject();
-                //Echo message back to client with updated time stamp.
-                ((Message) msg).setTimeStamp(new Date());
-                System.out.println("input listener b4 notifyListeners(msg)");
-                //Notify listeners broken
-                notifyListeners(msg);
+                Object obj = ois.readObject();
+                notifyListeners(obj);
                 
-     
-                
-                //Don't need to close because everything is dropped once connection is lost
-   
             }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ClassNotFoundException e)
+		} 
+		catch (ClassNotFoundException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -75,12 +68,11 @@ public class InputListener implements Runnable {
 		this.number = number;
 	}
 
-	public void notifyListeners(Object msg)
+	public void notifyListeners(Object obj)
     {
         for( PropertyChangeListener observer : observers )
         {
-            System.out.println("Notify listeners: " + msg);
-            observer.propertyChange(new PropertyChangeEvent(this, null, null, msg));
+            observer.propertyChange(new PropertyChangeEvent(this, null, null, obj));
         }
     }
 	
