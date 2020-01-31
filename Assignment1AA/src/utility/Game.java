@@ -32,7 +32,7 @@ public class Game implements Serializable
     @Override
     public String toString()
     {
-        return "Game [type=" + type + "]";
+        return type;
     }
     
 }

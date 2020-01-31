@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import utility.Container;
 import utility.Game;
@@ -143,6 +144,18 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	}
 
 	public void writeGame(Object game) throws IOException {
+		
+		String type = game.toString();
+		
+		if (type.equals("rock")) {
+			controller.setImg1(new Image("client/rock.png"));
+		}
+		if (type.equals("paper")) {
+			controller.setImg1(new Image("client/paper.png"));
+		}
+		if (type.equals("scissors")) {
+			controller.setImg1(new Image("client/scissors.jpg"));
+		}
 		oos.writeObject(game);
 	}
 
@@ -152,13 +165,20 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		// New added line to append message object to other players GUI
 
 		GameContainer controller = getController();
-		String s = new String();
-
 		if (evt.getNewValue().getClass().isInstance(new Message())) {
 			System.out.println((Message) evt.getNewValue());
 			controller.appendMessage((Message) evt.getNewValue());
 		} else if (evt.getNewValue().getClass().isInstance(new Game())) {
-			System.out.println("11111111");
+			String type = evt.getNewValue().toString();
+			if (type.equals("rock")) {
+				controller.setImg2(new Image("client/rock.png"));
+			}
+			if (type.equals("paper")) {
+				controller.setImg2(new Image("client/paper.png"));
+			}
+			if (type.equals("scissors")) {
+				controller.setImg2(new Image("client/scissors.jpg"));
+			}
 		}
 //	    else if(evt.getNewValue().getClass().isInstance(s))
 //	    {

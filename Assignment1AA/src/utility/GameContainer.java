@@ -12,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 public class GameContainer implements Initializable {
@@ -21,6 +23,9 @@ public class GameContainer implements Initializable {
 
 	@FXML
 	public Text player1, player2;
+	
+	@FXML
+	public ImageView img1, img2;
 
 	public int socketNum;
 
@@ -111,4 +116,23 @@ public class GameContainer implements Initializable {
 		this.user = user;
 	}
 
+	public ImageView getImg1() {
+		return img1;
+	}
+
+	public void setImg1(Image pic) {
+		img1.setImage(pic);
+	}
+
+	public ImageView getImg2() {
+		return img2;
+	}
+
+	public void setImg2(Image pic) {
+		img2.setImage(pic);
+	}
+	
+	
+	
+	
 }
