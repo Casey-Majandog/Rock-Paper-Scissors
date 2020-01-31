@@ -89,6 +89,7 @@ public class Message implements Serializable
 	//Operational Methods
 	public String toString()
 	{
+	    //Comment
 		return "[" + getTimeStamp().getHours() + ":" + getTimeStamp().getMinutes() + ":"
 				+ getTimeStamp().getSeconds() + "] " + getUser() + ": " + getMsg() + "\n";
 	}
