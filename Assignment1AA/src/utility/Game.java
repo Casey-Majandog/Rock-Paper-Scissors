@@ -16,6 +16,9 @@ public class Game implements Serializable
         this.type = type;
     }
 
+    public Game() {
+    	type = "";
+    }
     public String getType()
     {
         return type;

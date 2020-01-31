@@ -58,14 +58,14 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	public String userName;
 
 	Container container;
-	
+
 	GameContainer controller;
-	
+
 	ObjectOutputStream oos = null;
-    ObjectInputStream ois = null;
-    InputListener lis;
-    
-    FXMLLoader loader;
+	ObjectInputStream ois = null;
+	InputListener lis;
+
+	FXMLLoader loader;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -77,9 +77,9 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		window = primaryStage;
 		try {
 
-		    loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));               
-            
-            Parent root = loader.load();
+			loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
+
+			Parent root = loader.load();
 
 			loginScene = new Scene(root, 400, 200);
 			// loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -95,20 +95,25 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	}
 
 	public boolean connectServer(String user, String ip) {
-		
+
 		try {
 
 			Socket socket = new Socket(ip, 3333);
-		
+
 			// Create an object output stream to send the message to server.
 			OutputStream os = socket.getOutputStream();
 			oos = new ObjectOutputStream(os);
 			lis = new InputListener(0, socket, this);
 			new Thread(lis).start();
-			
+
 //			System.out.println("ConnectServer user: " +user);
 //			oos.writeObject(user);
+//			controller = getController();
 
+//			if(controller.getSocketNum() ==2) {
+//				oos.writeObject(user);
+//			}
+//			
 			System.out.println("CONNECTED");
 			if (socket.isConnected()) {
 				return true;
@@ -124,55 +129,43 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 //			e.printStackTrace();
 //		}
 	}
-	
-	public GameContainer getController()
-	{
-	    return controller;
+
+	public GameContainer getController() {
+		return controller;
 	}
-	
-	public void setController(GameContainer controller)
-	{
-	    this.controller = controller;
+
+	public void setController(GameContainer controller) {
+		this.controller = controller;
 	}
-	
-	public void writeMessage(Object msg) throws IOException
-	{
-	    oos.writeObject(msg);
+
+	public void writeMessage(Object msg) throws IOException {
+		oos.writeObject(msg);
 	}
-	
-	public void writeGame(Object game) throws IOException
-    {
-        oos.writeObject(game);
-    }
+
+	public void writeGame(Object game) throws IOException {
+		oos.writeObject(game);
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-	    //check for instance of
-		//New added line to append message object to other players GUI
-	    	    
-	    GameContainer controller = getController();
-	    Message msg = new Message();
-	    Game game = new Game("Game");
-	    String s = new String();
-        
-	    if(evt.getNewValue().getClass().isInstance(msg))
-        {
-            System.out.println((Message)evt.getNewValue());
-            controller.appendMessage((Message)evt.getNewValue());
-        }
-	    else if(evt.getNewValue().getClass().isInstance(game))
-	    {
-	        System.out.println("11111111");
-	    }
+		// check for instance of
+		// New added line to append message object to other players GUI
+
+		GameContainer controller = getController();
+		String s = new String();
+
+		if (evt.getNewValue().getClass().isInstance(new Message())) {
+			System.out.println((Message) evt.getNewValue());
+			controller.appendMessage((Message) evt.getNewValue());
+		} else if (evt.getNewValue().getClass().isInstance(new Game())) {
+			System.out.println("11111111");
+		}
 //	    else if(evt.getNewValue().getClass().isInstance(s))
 //	    {
 //	        System.out.println("In if Srrgnng" + evt.getNewValue().getClass());
 //	        controller.setPlayer2((String)evt.getNewValue());
 //	    }
-	   
-		
-		
-        
+
 	}
 
 	@FXML

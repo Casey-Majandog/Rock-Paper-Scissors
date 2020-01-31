@@ -1,9 +1,7 @@
 package utility;
 
 import java.io.IOException;
-import java.util.Date;
 
-import javax.swing.JOptionPane;
 
 import client.ClientGUI;
 import javafx.application.Platform;
@@ -15,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -33,8 +30,9 @@ public class Container {
 //    private Message message1, message2;
     @FXML
     private Message message1;
-    @FXML
     private String userName ="No user";
+    
+    int socketNum;
     
     
     //Methods
@@ -47,12 +45,8 @@ public class Container {
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
 		client = new ClientGUI();
-		String getUsername = null;
 		if (client.connectServer(displayName.getText(), serverIP.getText())) {
-		    getUsername = displayName.getText();
-		    
-		    Date timeStamp = new Date();
-		    Message newMessage = new Message(getUsername, null, timeStamp); 
+		    setUserName(displayName.getText());
 		    
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        
 			loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
@@ -60,10 +54,12 @@ public class Container {
 			Parent gameViewParent = loader.load();
 			Scene gameScene = new Scene(gameViewParent);
 			GameContainer controller = loader.getController();
+		
 			
-			controller.initializeMessage(newMessage);
+//			controller.initializeMessage(newMessage);
 			controller.getClient(client);
-			controller.setPlayer1(getUsername);
+			controller.setPlayer1(getUserName());
+			controller.passUserName(getUserName());
 			client.setController(controller);
 
 			// get existing window from loginScene
@@ -95,5 +91,15 @@ public class Container {
 	    message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
 	    System.out.println("Message has been set: " + message1.toString());
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	
 
 }

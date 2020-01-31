@@ -39,7 +39,9 @@ public class InputListener implements Runnable {
 
 		try {
 		    
+			
 			ois = new ObjectInputStream(socket.getInputStream());
+
 		     //GUI will be the loop for the assignment
             while(true)
             {
@@ -75,8 +77,6 @@ public class InputListener implements Runnable {
             observer.propertyChange(new PropertyChangeEvent(this, null, null, obj));
         }
     }
-	
-
 
 }
 
