@@ -83,12 +83,15 @@ public class GameContainer implements Initializable {
 		this.message1 = message1;
 	}
 
-	public void setPlayer1(String username) {
-		this.player1.setText(username);
+
+	
+	
+	public Text getPlayer1() {
+		return player1;
 	}
 
-	public void setPlayer2(String username) {
-		this.player2.setText(username);
+	public Text getPlayer2() {
+		return player2;
 	}
 
 	public int getSocketNum() {
@@ -132,6 +135,10 @@ public class GameContainer implements Initializable {
 		img2.setImage(pic);
 	}
 	
+	
+	public void loadGUI() {
+		
+	}
 	
 	
 	

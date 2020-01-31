@@ -10,6 +10,7 @@ import java.util.Date;
 
 import utility.InputListener;
 import utility.Message;
+import utility.Person;
 
 public class ClientHandler implements Runnable, PropertyChangeListener
 {
@@ -20,6 +21,7 @@ public class ClientHandler implements Runnable, PropertyChangeListener
     private ObjectOutputStream oos2;
     private InputListener lis1;
     private InputListener lis2;
+  
 
     
 //Two sockets come from the server
@@ -40,7 +42,7 @@ public class ClientHandler implements Runnable, PropertyChangeListener
         
         lis1 = new InputListener(1, this.socket1, this);
         lis2 = new InputListener(2, this.socket2, this);
-
+        
         
     }
 /**
@@ -52,6 +54,9 @@ public class ClientHandler implements Runnable, PropertyChangeListener
         
         new Thread(lis1).start();
         new Thread(lis2).start();
+        lis1.notifyListeners(new Person());
+        lis2.notifyListeners(new Person());
+        System.out.println("new Perosn() stuff");
  
        
     }

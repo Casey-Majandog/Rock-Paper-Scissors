@@ -29,10 +29,6 @@ public class InputListener implements Runnable {
 		observers.add(observer);
 	}
 	
-	public InputListener(List<PropertyChangeListener> o)
-	{
-	    
-	}
 
 	@Override
 	public void run() {
@@ -48,6 +44,7 @@ public class InputListener implements Runnable {
                 //Read input from client
                 Object obj = ois.readObject();
                 notifyListeners(obj);
+
                 
             }
 		} catch (IOException e) {

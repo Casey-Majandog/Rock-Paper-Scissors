@@ -27,6 +27,8 @@ public class Container {
     @FXML
     private ClientGUI client;
     
+    private Stage window;
+    
 //    private Message message1, message2;
     @FXML
     private Message message1;
@@ -45,31 +47,40 @@ public class Container {
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
 		client = new ClientGUI();
-		if (client.connectServer(displayName.getText(), serverIP.getText())) {
+			client.connectServer(displayName.getText(), serverIP.getText());
 		    setUserName(displayName.getText());
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/WaitingScreen.fxml"));		        
+			loader.setLocation(getClass().getResource("/client/WaitingScreen.fxml"));
+			Container container = loader.getController();
+			client.setContainer(container);
+			
 		    
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        
-			loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
+//			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        
+//			loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
 			
 			Parent gameViewParent = loader.load();
 			Scene gameScene = new Scene(gameViewParent);
-			GameContainer controller = loader.getController();
+			WaitingContainer waitController = loader.getController();
 		
 			
 //			controller.initializeMessage(newMessage);
-			controller.getClient(client);
-			controller.setPlayer1(getUserName());
-			controller.passUserName(getUserName());
-			client.setController(controller);
+//			controller.getClient(client);
+			
+//			controller.setPlayer1(getUserName());
+//			controller.passUserName(getUserName());
+//			
 
 			// get existing window from loginScene
-			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			client.getWindow(window);
 			window.setScene(gameScene);
 			window.show();
+			
 
-		} else {
-			System.out.println("Server not up");
-		}
+			
+			
+
 		   
 		
 	}
@@ -98,6 +109,10 @@ public class Container {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public Stage sendWindow() {
+		return window;
 	}
 	
 	
