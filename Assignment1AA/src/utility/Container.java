@@ -48,12 +48,14 @@ public class Container {
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
 		client = new ClientGUI();
 			client.connectServer(displayName.getText(), serverIP.getText());
-		    setUserName(displayName.getText());
-
+			
+			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/WaitingScreen.fxml"));		        
 			loader.setLocation(getClass().getResource("/client/WaitingScreen.fxml"));
 			Container container = loader.getController();
+			
 			client.setContainer(container);
+			client.setUserName(displayName.getText());
 			
 		    
 //			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        

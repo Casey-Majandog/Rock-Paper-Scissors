@@ -63,7 +63,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	Container container;
 
-	GameContainer gameContainer;
+	GameContainer controller;
 
 	ObjectOutputStream oos = null;
 	ObjectInputStream ois = null;
@@ -132,7 +132,12 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	}
 
 	public GameContainer getController() {
-		return gameContainer;
+		return controller;
+	}
+	
+	public void setController(GameContainer controller)
+	{
+	    this.controller = controller;
 	}
 
 	public void setContainer(Container container) {
@@ -153,30 +158,28 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		String type = game.toString();
 
 		if (type.equals("rock")) {
-			gameContainer.setImg1(new Image("client/rock.png"));
+			controller.setImg1(new Image("client/rock.png"));
 		}
 		if (type.equals("paper")) {
-			gameContainer.setImg1(new Image("client/paper.png"));
+			controller.setImg1(new Image("client/paper.png"));
 		}
 		if (type.equals("scissors")) {
-			gameContainer.setImg1(new Image("client/scissors.jpg"));
+			controller.setImg1(new Image("client/scissors.jpg"));
 		}
 		oos.writeObject(game);
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("PROP CHANGE");
 		// check for instance of
 		// New added line to append message object to other players GUI
 
-		
 		if (evt.getNewValue().getClass().isInstance(new Message())) {
-			GameContainer controller = getController();
+			//GameContainer controller = getController();
 			System.out.println((Message) evt.getNewValue());
 			controller.appendMessage((Message) evt.getNewValue());
 		} else if (evt.getNewValue().getClass().isInstance(new Game())) {
-			GameContainer controller = getController();
+			//GameContainer controller = getController();
 			String type = evt.getNewValue().toString();
 			if (type.equals("rock")) {
 				controller.setImg2(new Image("client/rock.png"));
@@ -196,6 +199,12 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 				loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
 				Parent gameViewParent = loader.load();
 				gameScreen = new Scene(gameViewParent);
+				setController(loader.getController());
+				
+				//To get the username from login
+				controller.passUserName(userName);
+				controller.getClient(this);
+				controller.displayPlayer1(userName);
 				
 				primaryStage.setScene(gameScreen);
 				primaryStage.show();
@@ -232,5 +241,17 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	public void getWindow(Stage window) {
 		this.primaryStage = window;
 	}
+
+    public String getUserName()
+    {
+        return userName;
+    }
+
+    public void setUserName(String userName)
+    {
+        this.userName = userName;
+    }
+	
+	
 
 }

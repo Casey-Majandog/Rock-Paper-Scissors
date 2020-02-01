@@ -93,7 +93,24 @@ public class GameContainer implements Initializable {
 	public Text getPlayer2() {
 		return player2;
 	}
-
+	
+	public void setPlayer1(Text player1){
+        this.player1 = player1;
+        player1.setText(user);
+    }
+	
+	public void setPlayer2(Text player2){
+	    this.player2 = player2;   
+	}
+	
+	public void displayPlayer1(String user1){
+        player1.setText(user1);
+    }
+	
+	public void displayPlayer2(String user2){
+        player2.setText(user2);
+    }
+	
 	public int getSocketNum() {
 		return socketNum;
 	}
@@ -107,9 +124,9 @@ public class GameContainer implements Initializable {
 
 	}
 
-//	public void initializeMessage(Message message) {
-//		message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
-//	}
+	public void initializeMessage(Message message) {
+		message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
+	}
 
 	public void getClient(Object newClient) {
 		this.client = (ClientGUI) newClient;
@@ -139,6 +156,8 @@ public class GameContainer implements Initializable {
 	public void loadGUI() {
 		
 	}
+
+   
 	
 	
 	
