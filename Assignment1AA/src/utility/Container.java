@@ -2,7 +2,6 @@ package utility;
 
 import java.io.IOException;
 
-
 import client.ClientGUI;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,27 +16,26 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class Container {
-    //Attributes
+	// Attributes
 	@FXML
 	private Button clearButton, connectButton, send;
 	@FXML
 	private TextField displayName, serverIP;
-    @FXML
-    private MenuItem quitMenu;
-    @FXML
-    private ClientGUI client;
-    
-    private Stage window;
-    
+	@FXML
+	private MenuItem quitMenu;
+	@FXML
+	private ClientGUI client;
+
+	private Stage window;
+
 //    private Message message1, message2;
-    @FXML
-    private Message message1;
-    private String userName ="No user";
-    
-    int socketNum;
-    
-    
-    //Methods
+	@FXML
+	private Message message1;
+	private String userName = "No user";
+
+	int socketNum;
+
+	// Methods
 	@FXML
 	public void handleClearButtonAction(ActionEvent event) {
 		displayName.setText("");
@@ -47,44 +45,35 @@ public class Container {
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
 		client = new ClientGUI();
-			client.connectServer(displayName.getText(), serverIP.getText());
-			
-			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/WaitingScreen.fxml"));		        
-			loader.setLocation(getClass().getResource("/client/WaitingScreen.fxml"));
-			Container container = loader.getController();
-			
-			client.setContainer(container);
-			client.setUserName(displayName.getText());
-			
-		    
+		client.connectServer(displayName.getText(), serverIP.getText());
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("client/WaitingScreen.fxml"));
+		loader.setLocation(getClass().getResource("/client/WaitingScreen.fxml"));
+		Container container = loader.getController();
+
+		client.setContainer(container);
+		client.setUserName(displayName.getText());
+
 //			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        
 //			loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
-			
-			Parent gameViewParent = loader.load();
-			Scene gameScene = new Scene(gameViewParent);
-			WaitingContainer waitController = loader.getController();
-		
-			
+
+		Parent gameViewParent = loader.load();
+		Scene gameScene = new Scene(gameViewParent);
+		WaitingContainer waitController = loader.getController();
+
 //			controller.initializeMessage(newMessage);
 //			controller.getClient(client);
-			
+
 //			controller.setPlayer1(getUserName());
 //			controller.passUserName(getUserName());
 //			
 
-			// get existing window from loginScene
-			window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			client.getWindow(window);
-			window.setScene(gameScene);
-			window.show();
-			
+		// get existing window from loginScene
+		window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		client.getWindow(window);
+		window.setScene(gameScene);
+		window.show();
 
-			
-			
-
-		   
-		
 	}
 
 	@FXML
@@ -92,17 +81,16 @@ public class Container {
 		Platform.exit();
 		// http://www.learningaboutelectronics.com/Articles/How-to-add-functionality-to-a-menu-in-JavaFX.php
 	}
-	
+
 	@FXML
 	public void handleDisconnectButtonAction(ActionEvent event) {
 		Platform.exit();
 		// http://www.learningaboutelectronics.com/Articles/How-to-add-functionality-to-a-menu-in-JavaFX.php
 	}
-	
-	public void initializeMessage(Message message)
-	{
-	    message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
-	    System.out.println("Message has been set: " + message1.toString());
+
+	public void initializeMessage(Message message) {
+		message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
+		System.out.println("Message has been set: " + message1.toString());
 	}
 
 	public String getUserName() {
@@ -112,11 +100,9 @@ public class Container {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
 	public Stage sendWindow() {
 		return window;
 	}
-	
-	
 
 }

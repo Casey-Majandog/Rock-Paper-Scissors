@@ -168,6 +168,16 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		}
 		oos.writeObject(game);
 	}
+	
+	public void writeUser(String user) {
+		try {
+			oos.writeObject(user);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -203,17 +213,20 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 				
 				//To get the username from login
 				controller.passUserName(userName);
-				controller.getClient(this);
-				controller.displayPlayer1(userName);
-				
+				controller.getClient(this);			
 				primaryStage.setScene(gameScreen);
 				primaryStage.show();
+				controller.setDisplayNames();
+				
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
+		} else if (evt.getNewValue().getClass().isInstance(new String())) {
+			System.out.println("displayPlayer2" +evt.getNewValue().toString() );
+			controller.displayPlayer2(evt.getNewValue().toString());
 		}
 		
 //	    else if(evt.getNewValue().getClass().isInstance(s))
@@ -223,6 +236,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 //	    }
 
 	}
+	
 
 	@FXML
 	public void handleClearButtonAction(ActionEvent event) {

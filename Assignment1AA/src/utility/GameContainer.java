@@ -66,6 +66,11 @@ public class GameContainer implements Initializable {
 		client.writeGame(type);
 
 	}
+	
+	public void setDisplayNames() {
+		player1.setText(user);
+		client.writeUser(user);
+	}
 
 	public TextArea getChat() {
 		return chat;
