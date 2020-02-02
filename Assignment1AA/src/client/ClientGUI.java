@@ -166,6 +166,8 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		if (type.equals("scissors")) {
 			controller.setImg1(new Image("client/scissors.jpg"));
 		}
+		
+		controller.hideButton();
 		oos.writeObject(game);
 	}
 	
@@ -180,7 +182,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
+	public synchronized void propertyChange(PropertyChangeEvent evt) {
 		// check for instance of
 		// New added line to append message object to other players GUI
 
@@ -191,6 +193,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		} else if (evt.getNewValue().getClass().isInstance(new Game())) {
 			//GameContainer controller = getController();
 			String type = evt.getNewValue().toString();
+			controller.showButton();
 			if (type.equals("rock")) {
 				controller.setImg2(new Image("client/rock.png"));
 			}
@@ -200,6 +203,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			if (type.equals("scissors")) {
 				controller.setImg2(new Image("client/scissors.jpg"));
 			}
+			//A method to check if both image are filled.
 		} else if (evt.getNewValue().getClass().isInstance(new Person())) {
 			System.out.println("TEST1");
 			Platform.runLater(() -> {
@@ -227,6 +231,11 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		} else if (evt.getNewValue().getClass().isInstance(new String())) {
 			System.out.println("displayPlayer2" +evt.getNewValue().toString() );
 			controller.displayPlayer2(evt.getNewValue().toString());
+		}
+		else if (evt.getNewValue().getClass().isInstance(new Integer(0)))
+		{
+		    
+		    controller.hideButton();
 		}
 		
 //	    else if(evt.getNewValue().getClass().isInstance(s))

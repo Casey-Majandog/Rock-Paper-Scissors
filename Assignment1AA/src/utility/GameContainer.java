@@ -26,6 +26,9 @@ public class GameContainer implements Initializable {
 	
 	@FXML
 	public ImageView img1, img2;
+	
+	@FXML 
+	public Button rock, paper, scissors;
 
 	public int socketNum;
 
@@ -88,7 +91,19 @@ public class GameContainer implements Initializable {
 		this.message1 = message1;
 	}
 
-
+	public void hideButton()
+	{
+	    rock.setDisable(true);
+	    paper.setDisable(true);
+	    scissors.setDisable(true);
+	}
+	
+	public void showButton()
+    {
+        rock.setDisable(false);
+        paper.setDisable(false);
+        scissors.setDisable(false);
+    }
 	
 	
 	public Text getPlayer1() {

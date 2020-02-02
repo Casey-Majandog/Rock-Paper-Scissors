@@ -49,14 +49,33 @@ public class ClientHandler implements Runnable, PropertyChangeListener
  * Reading and writing occurs in the run code
  */
     @Override
-    public void run()
+    public synchronized void run()
     {
         
         new Thread(lis1).start();
         new Thread(lis2).start();
         lis1.notifyListeners(new Person());
         lis2.notifyListeners(new Person());
-        System.out.println("new Perosn() stuff");
+        
+        int number = (int)(Math.round(Math.random()+1));
+       
+        try
+        {
+            Thread.sleep(1000);
+        } catch (InterruptedException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        if (number == 1)
+        {
+            lis1.notifyListeners(number);
+        }
+        else
+        {
+            lis2.notifyListeners(number);
+        }
  
        
     }
