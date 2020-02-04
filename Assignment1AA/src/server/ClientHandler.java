@@ -49,7 +49,7 @@ public class ClientHandler implements Runnable, PropertyChangeListener
  * Reading and writing occurs in the run code
  */
     @Override
-    public synchronized void run()
+    public void run()
     {
         
         new Thread(lis1).start();
@@ -80,12 +80,11 @@ public class ClientHandler implements Runnable, PropertyChangeListener
        
     }
     
-    public void propertyChange(PropertyChangeEvent event)
+    public synchronized void propertyChange(PropertyChangeEvent event)
     {
        InputListener lis = (InputListener) event.getSource();
        if (lis.getNumber() == 1) {
     	   try {
-    		   System.out.println("client handler if number 1");
 			oos2.writeObject(event.getNewValue());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -94,7 +93,6 @@ public class ClientHandler implements Runnable, PropertyChangeListener
     	   
        } else {
     	   try {
-    		   System.out.println("client handler if number 2");
 			oos1.writeObject(event.getNewValue());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

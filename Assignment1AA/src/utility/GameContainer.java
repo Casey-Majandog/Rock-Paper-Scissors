@@ -170,6 +170,7 @@ public class GameContainer implements Initializable {
 
 	public void setImg2(Image pic) {
 		img2.setImage(pic);
+	
 	}
 	
 	

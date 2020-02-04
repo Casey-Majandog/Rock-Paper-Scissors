@@ -54,19 +54,8 @@ public class Container {
 		client.setContainer(container);
 		client.setUserName(displayName.getText());
 
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource("client/GameScreen.fxml"));		        
-//			loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
-
 		Parent gameViewParent = loader.load();
 		Scene gameScene = new Scene(gameViewParent);
-		WaitingContainer waitController = loader.getController();
-
-//			controller.initializeMessage(newMessage);
-//			controller.getClient(client);
-
-//			controller.setPlayer1(getUserName());
-//			controller.passUserName(getUserName());
-//			
 
 		// get existing window from loginScene
 		window = (Stage) ((Node) event.getSource()).getScene().getWindow();
