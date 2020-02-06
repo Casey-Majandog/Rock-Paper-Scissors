@@ -46,76 +46,68 @@ import java.util.*;
  * 
  */
 
-public class ClientGUI extends Application implements PropertyChangeListener
-{
+public class ClientGUI extends Application implements PropertyChangeListener {
 
-    Scene loginScene, menuScreen, gameScreen;
-    private Stage primaryStage;
-    @FXML
-    private Button clearButton, connectButton, send;
-    @FXML
-    private TextField displayName, serverIP;
-    @FXML
-    private MenuItem quitMenu;
-    @FXML
-    public TextArea chat, msg;
+	Scene loginScene, menuScreen, gameScreen;
+	private Stage primaryStage;
+	@FXML
+	private Button clearButton, connectButton, send;
+	@FXML
+	private TextField displayName, serverIP;
+	@FXML
+	private MenuItem quitMenu;
+	@FXML
+	public TextArea chat, msg;
 
-    public String userName, userName2, player1Pick, player2Pick;
+	public String userName, userName2, player1Pick, player2Pick;
 
-    Container container;
+	Container container;
 
-    GameContainer controller;
+	GameContainer controller;
 
-    ObjectOutputStream oos = null;
-    ObjectInputStream ois = null;
-    InputListener lis;
-    FXMLLoader loader;
+	ObjectOutputStream oos = null;
+	ObjectInputStream ois = null;
+	InputListener lis;
+	FXMLLoader loader;
 
-    public static void main(String[] args)
-    {
-        launch(args);
+	public static void main(String[] args) {
+		launch(args);
 
-    }
+	}
 
-    @Override
-    public void start(Stage primaryStage)
-    {
-        this.primaryStage = primaryStage;
-        try
-        {
+	@Override
+	public void start(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+		try {
 
-            loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
+			loader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
 
-            Parent root = loader.load();
+			Parent root = loader.load();
 
-            loginScene = new Scene(root, 400, 200);
-            // loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            primaryStage.setScene(loginScene);
-            primaryStage.show();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+			loginScene = new Scene(root, 400, 200);
+			// loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setScene(loginScene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static void disconnectServer()
-    {
+	public static void disconnectServer() {
 
-    }
+	}
 
-    public void connectServer(String user, String ip)
-    {
+	public void connectServer(String user, String ip) {
 
-        try
-        {
+		try {
 
-            Socket socket = new Socket(ip, 3333);
+			Socket socket = new Socket(ip, 3333);
 
-            // Create an object output stream to send the message to server.
-            OutputStream os = socket.getOutputStream();
-            oos = new ObjectOutputStream(os);
-            lis = new InputListener(0, socket, this);
-            new Thread(lis).start();
+			// Create an object output stream to send the message to server.
+			OutputStream os = socket.getOutputStream();
+			oos = new ObjectOutputStream(os);
+			lis = new InputListener(0, socket, this);
+			new Thread(lis).start();
 
 //			System.out.println("ConnectServer user: " +user);
 //			oos.writeObject(user);
@@ -125,312 +117,284 @@ public class ClientGUI extends Application implements PropertyChangeListener
 //				oos.writeObject(user);
 //			}
 //			
-            System.out.println("CONNECTED");
+			System.out.println("CONNECTED");
 //			if (socket.isConnected()) {
 //			}
-        } catch (UnknownHostException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 //		 catch (ClassNotFoundException e) {
 //			e.printStackTrace();
 //		}
-    }
+	}
 
-    public GameContainer getController()
-    {
-        return controller;
-    }
+	public GameContainer getController() {
+		return controller;
+	}
 
-    public void setController(GameContainer controller)
-    {
-        this.controller = controller;
-    }
+	public void setController(GameContainer controller) {
+		this.controller = controller;
+	}
 
-    public void setContainer(Container container)
-    {
-        this.container = container;
-    }
+	public void setContainer(Container container) {
+		this.container = container;
+	}
 
-    public void writeMessage(Object msg) throws IOException
-    {
-        oos.writeObject(msg);
-    }
+	public void writeMessage(Object msg) throws IOException {
+		oos.writeObject(msg);
+	}
 
-    public void writeGame(Object game) throws IOException
-    {
+	public void writeGame(Object game) throws IOException {
 
-        String type = game.toString();
+		String type = game.toString();
 
-        if (type.equals("rock"))
-        {
-            controller.setImg1(new Image("client/rock.png"));
-            player1Pick = "rock";
-        }
-        if (type.equals("paper"))
-        {
-            controller.setImg1(new Image("client/paper.png"));
-            player1Pick = "paper";
-        }
-        if (type.equals("scissors"))
-        {
-            controller.setImg1(new Image("client/scissors.jpg"));
-            player1Pick = "scissors";
-        }
+		if (type.equals("rock")) {
+			controller.setImg1(new Image("client/rock.png"));
+			player1Pick = "rock";
+		}
+		if (type.equals("paper")) {
+			controller.setImg1(new Image("client/paper.png"));
+			player1Pick = "paper";
+		}
+		if (type.equals("scissors")) {
+			controller.setImg1(new Image("client/scissors.jpg"));
+			player1Pick = "scissors";
+		}
 
-        controller.hideButton();
-        oos.writeObject(game);
-    }
+		controller.hideButton();
+		oos.writeObject(game);
+	}
 
-    public void writeUser(String user)
-    {
-        try
-        {
-            oos.writeObject(user);
-        } catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	public void writeUser(String user) {
+		try {
+			oos.writeObject(user);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public synchronized void propertyChange(PropertyChangeEvent evt)
-    {
-        // check for instance of
-        // New added line to append message object to other players GUI
-        if (evt.getNewValue().toString().contains("WIN"))
-        {
-            int result = JOptionPane.showConfirmDialog(null, "You lose \n Do you want to play again?", "Info", JOptionPane.YES_NO_OPTION);
-            try
-            {
-                playAgain(result);
-            } catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+	@Override
+	public synchronized void propertyChange(PropertyChangeEvent evt) {
+		// check for instance of
+		// New added line to append message object to other players GUI
+		if (evt.getNewValue().toString().contains("WIN")) {
+			int result = JOptionPane.showConfirmDialog(null, "You lose \n Do you want to play again?", "Info",
+					JOptionPane.YES_NO_OPTION);
+			try {
+				playAgain(result);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-        }
-        else if (evt.getNewValue().toString().contains("DRAW"))
-        {
-            int result = JOptionPane.showConfirmDialog(null, "Draw! \n Do you want to play again?", "Info", JOptionPane.YES_NO_OPTION);
-            try
-            {
-                playAgain(result);
-            } catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+		} else if (evt.getNewValue().toString().contains("DRAW")) {
+			int result = JOptionPane.showConfirmDialog(null, "Draw! \n Do you want to play again?", "Info",
+					JOptionPane.YES_NO_OPTION);
+			try {
+				playAgain(result);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-        }
-        else if (evt.getNewValue().toString().contains("PLAYAGAIN"))
-        {
-           controller.setImg1(null);
-           player1Pick = null;
-           controller.setImg2(null);
-           player2Pick = null;
-        }
-        else if (evt.getNewValue().toString().contains("LOSE"))
-        {
-            int result = JOptionPane.showConfirmDialog(null, "You win! \n Do you want to play again?", "Info", JOptionPane.YES_NO_OPTION);
-            try
-            {
-                playAgain(result);
-            } catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+		} else if (evt.getNewValue().toString().contains("PLAYAGAIN")) {
+			controller.setImg1(null);
+			player1Pick = null;
+			controller.setImg2(null);
+			player2Pick = null;
+		} else if (evt.getNewValue().toString().contains("LOSE")) {
+			int result = JOptionPane.showConfirmDialog(null, "You win! \n Do you want to play again?", "Info",
+					JOptionPane.YES_NO_OPTION);
+			try {
+				playAgain(result);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-        }
-        else if (evt.getNewValue().getClass().isInstance(new Message()))
-        {
-            controller.appendMessage((Message) evt.getNewValue());
-        } else if (evt.getNewValue().getClass().isInstance(new Game()))
-        {
-            String type = evt.getNewValue().toString();
-            controller.showButton();
-            if (type.equals("rock"))
-            {
-                controller.setImg2(new Image("client/rock.png"));
-                player2Pick = "rock";
-            }
-            if (type.equals("paper"))
-            {
-                controller.setImg2(new Image("client/paper.png"));
-                player2Pick = "paper";
-            }
-            if (type.equals("scissors"))
-            {
-                controller.setImg2(new Image("client/scissors.jpg"));
-                player2Pick = "scissors";
-            }
-            System.out.println(player1Pick + " " + player2Pick);
-            if (player1Pick != null)
-            {
-                try
-                {
-                    determineWinner(player1Pick, player2Pick);
-                } catch (IOException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            // A method to check if both image are filled.
-        } else if (evt.getNewValue().getClass().isInstance(new Person()))
-        {
-            System.out.println("TEST1");
-            Platform.runLater(() ->
-            {
-                // https://stackoverflow.com/questions/21083945/how-to-avoid-not-on-fx-application-thread-currentthread-javafx-application-th
-                try
-                {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/GameScreen.fxml"));
-                    loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
-                    Parent gameViewParent = loader.load();
-                    gameScreen = new Scene(gameViewParent);
-                    setController(loader.getController());
+		} else if (evt.getNewValue().getClass().isInstance(new Message())) {
+			controller.appendMessage((Message) evt.getNewValue());
+		} else if (evt.getNewValue().getClass().isInstance(new Game())) {
+			String type = evt.getNewValue().toString();
+			controller.showButton();
+			controller.setImg2(new Image("client/unknown.png"));
+			if (type.equals("rock")) {
+				// controller.setImg2(new Image("client/rock.png"));
+				player2Pick = "rock";
+			}
+			if (type.equals("paper")) {
+				// controller.setImg2(new Image("client/paper.png"));
+				player2Pick = "paper";
+			}
+			if (type.equals("scissors")) {
+				// controller.setImg2(new Image("client/scissors.jpg"));
+				player2Pick = "scissors";
+			}
+			System.out.println(player1Pick + " " + player2Pick);
+			if (player1Pick != null) {
+				updateImg(player1Pick, player2Pick);
+			}
+			// A method to check if both image are filled.
+		} else if (evt.getNewValue().toString().contains("updateImg")) {
 
-                    // To get the username from login
-                    controller.passUserName(userName);
-                    controller.getClient(this);
-                    primaryStage.setScene(gameScreen);
-                    primaryStage.show();
-                    controller.setDisplayNames();
+			if (player2Pick.equals("rock")) {
+				controller.setImg2(new Image("client/rock.png"));
+			} else if (player2Pick.equals("paper")) {
+				controller.setImg2(new Image("client/paper.png"));
+			} else {
+				controller.setImg2(new Image("client/scissors.jpg"));
+			}
 
-                } catch (IOException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            });
-        } else if (evt.getNewValue().getClass().isInstance(new String()))
-        {
-            System.out.println("displayPlayer2" + evt.getNewValue().toString());
-            controller.displayPlayer2(evt.getNewValue().toString());
-            userName2 = evt.getNewValue().toString();
-        } else if (evt.getNewValue().getClass().isInstance(new Integer(0)))
-        {
-            controller.hideButton();
-        }
+		} else if (evt.getNewValue().getClass().isInstance(new Person())) {
+			System.out.println("TEST1");
+			Platform.runLater(() -> {
+				// https://stackoverflow.com/questions/21083945/how-to-avoid-not-on-fx-application-thread-currentthread-javafx-application-th
+				try {
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/GameScreen.fxml"));
+					loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
+					Parent gameViewParent = loader.load();
+					gameScreen = new Scene(gameViewParent);
+					setController(loader.getController());
 
-    }
+					// To get the username from login
+					controller.passUserName(userName);
+					controller.getClient(this);
+					primaryStage.setScene(gameScreen);
+					primaryStage.show();
+					controller.setDisplayNames();
 
-    private void determineWinner(String player1Pick, String player2Pick) throws IOException
-    {
-        boolean win = false;
-        boolean draw = false;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		} else if (evt.getNewValue().getClass().isInstance(new String())) {
+			System.out.println("displayPlayer2" + evt.getNewValue().toString());
+			controller.displayPlayer2(evt.getNewValue().toString());
+			userName2 = evt.getNewValue().toString();
+		} else if (evt.getNewValue().getClass().isInstance(new Integer(0))) {
+			controller.hideButton();
+		}
 
-        switch (player1Pick)
-        {
-        case ("rock"):
-            if (player2Pick.equals("rock"))
+	}
 
-                draw = true;
+	private void updateImg(String player1Pick, String player2Pick) {
+		if (player2Pick.equals("rock")) {
+			controller.setImg2(new Image("client/rock.png"));
+		} else if (player2Pick.equals("paper")) {
+			controller.setImg2(new Image("client/paper.png"));
+		} else {
+			controller.setImg2(new Image("client/scissors.jpg"));
+		}
+		try {
+			oos.writeObject("updateImg");
+			determineWinner(player1Pick, player2Pick);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-            if (player2Pick.equals("paper"))
-                ;
+	private void determineWinner(String player1Pick, String player2Pick) throws IOException {
+		boolean win = false;
+		boolean draw = false;
 
-            if (player2Pick.equals("scissors"))
+		switch (player1Pick) {
+		case ("rock"):
+			if (player2Pick.equals("rock"))
+				draw = true;
 
-                win = true;
-            break;
+			if (player2Pick.equals("paper"))
+				;
 
-        case ("paper"):
-            if (player2Pick.equals("rock"))
-                win = true;
+			if (player2Pick.equals("scissors"))
 
-            if (player2Pick.equals("paper"))
-                draw = true;
+				win = true;
+			break;
 
-            if (player2Pick.equals("scissors"))
-                ;
+		case ("paper"):
+			if (player2Pick.equals("rock"))
+				win = true;
 
-            break;
+			if (player2Pick.equals("paper"))
+				draw = true;
 
-        case ("scissors"):
-            if (player2Pick.equals("rock"))
-                ;
+			if (player2Pick.equals("scissors"))
+				;
 
-            if (player2Pick.equals("paper"))
-                win = true;
+			break;
 
-            if (player2Pick.equals("scissors"))
-                draw = true;
-            break;
-        }
-        
+		case ("scissors"):
+			if (player2Pick.equals("rock"))
+				;
 
-        if (win)
-        {
-            oos.writeObject("WIN"+win);
-            int result = JOptionPane.showConfirmDialog(null, "You win!\n Do you want to play again?", "Info", JOptionPane.YES_NO_OPTION);
-            playAgain(result);
-            
-        } else if (draw)
-        {
-            oos.writeObject("DRAW"+draw);
-            int result = JOptionPane.showConfirmDialog(null, "Draw!\n Do you want to play again?", "Info", JOptionPane.YES_NO_OPTION);
-            playAgain(result);
-        } else
-        {
-            oos.writeObject("LOSE"+win);
-            int result = JOptionPane.showConfirmDialog(null, "You lose!\n Do you want to play again?", "Info", JOptionPane.YES_NO_OPTION);
-            playAgain(result);
-        }
+			if (player2Pick.equals("paper"))
+				win = true;
 
-    }
-    
-    public void playAgain(int choice) throws IOException
-    {
-        System.out.println("PLay Agin");
-        if(choice == 0)
-        {
-            controller.setImg1(null);
-            player1Pick = null;
-            controller.setImg2(null);
-            player2Pick = null;
-            oos.writeObject("PLAYAGAIN");
-        }
-    }
+			if (player2Pick.equals("scissors"))
+				draw = true;
+			break;
+		}
 
-    @FXML
-    public void handleClearButtonAction(ActionEvent event)
-    {
-        displayName.setText("");
-        serverIP.setText("");
-    }
+		if (win) {
+			oos.writeObject("WIN" + win);
+			int result = JOptionPane.showConfirmDialog(null, "You win!\n Do you want to play again?", "Info",
+					JOptionPane.YES_NO_OPTION);
+			playAgain(result);
 
-    public ObjectOutputStream getOos()
-    {
-        return oos;
-    }
+		} else if (draw) {
+			oos.writeObject("DRAW" + draw);
+			int result = JOptionPane.showConfirmDialog(null, "Draw!\n Do you want to play again?", "Info",
+					JOptionPane.YES_NO_OPTION);
+			playAgain(result);
+		} else {
+			oos.writeObject("LOSE" + win);
+			int result = JOptionPane.showConfirmDialog(null, "You lose!\n Do you want to play again?", "Info",
+					JOptionPane.YES_NO_OPTION);
+			playAgain(result);
+		}
 
-    public void setOos(ObjectOutputStream oos)
-    {
-        this.oos = oos;
-    }
+	}
 
-    public void getWindow(Stage window)
-    {
-        this.primaryStage = window;
-    }
+	public void playAgain(int choice) throws IOException {
+		System.out.println("PLay Agin");
+		if (choice == 0) {
+			controller.setImg1(null);
+			player1Pick = null;
+			controller.setImg2(null);
+			player2Pick = null;
+			oos.writeObject("PLAYAGAIN");
+		}
+	}
 
-    public String getUserName()
-    {
-        return userName;
-    }
+	@FXML
+	public void handleClearButtonAction(ActionEvent event) {
+		displayName.setText("");
+		serverIP.setText("");
+	}
 
-    public void setUserName(String userName)
-    {
-        this.userName = userName;
-    }
+	public ObjectOutputStream getOos() {
+		return oos;
+	}
+
+	public void setOos(ObjectOutputStream oos) {
+		this.oos = oos;
+	}
+
+	public void getWindow(Stage window) {
+		this.primaryStage = window;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 }
