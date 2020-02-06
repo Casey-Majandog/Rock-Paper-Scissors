@@ -127,7 +127,7 @@ public class GameContainer implements Initializable {
         player1.setText(user1);
     }
 	
-	public void displayPlayer2(String user2){
+	public synchronized void displayPlayer2(String user2){
         player2.setText(user2);
     }
 	

@@ -62,9 +62,10 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	public String userName, userName2, player1Pick, player2Pick;
 
 	Container container;
+	private String ip;
 
 	GameContainer controller;
-
+	Socket socket;
 	ObjectOutputStream oos = null;
 	ObjectInputStream ois = null;
 	InputListener lis;
@@ -98,10 +99,10 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	}
 
 	public void connectServer(String user, String ip) {
-
+		this.ip = ip;
 		try {
 
-			Socket socket = new Socket(ip, 3333);
+			socket = new Socket(ip, 3333);
 
 			// Create an object output stream to send the message to server.
 			OutputStream os = socket.getOutputStream();
@@ -109,26 +110,14 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			lis = new InputListener(0, socket, this);
 			new Thread(lis).start();
 
-//			System.out.println("ConnectServer user: " +user);
-//			oos.writeObject(user);
-//			controller = getController();
-
-//			if(controller.getSocketNum() ==2) {
-//				oos.writeObject(user);
-//			}
-//			
 			System.out.println("CONNECTED");
-//			if (socket.isConnected()) {
-//			}
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-//		 catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	public GameContainer getController() {
@@ -168,10 +157,14 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		oos.writeObject(game);
 	}
 
-	public void writeUser(String user) {
+	public synchronized void writeUser(String user) {
 		try {
+			Thread.sleep(300);
 			oos.writeObject(user);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -206,6 +199,30 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			player1Pick = null;
 			controller.setImg2(null);
 			player2Pick = null;
+		} else if (evt.getNewValue().toString().contains("ENDGAME")) {
+			try {
+				System.out.println("ENDGAME");
+				controller.hideButton();
+				controller.setPlayer2(null);
+				socket.close();
+				oos.close();
+
+				socket = new Socket(ip, 3333);
+
+				// Create an object output stream to send the message to server.
+				OutputStream os = socket.getOutputStream();
+				oos = new ObjectOutputStream(os);
+				lis = new InputListener(0, socket, this);
+				new Thread(lis).start();
+
+				controller.passUserName(userName);
+				controller.setDisplayNames();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.exit(0);
 		} else if (evt.getNewValue().toString().contains("LOSE")) {
 			int result = JOptionPane.showConfirmDialog(null, "You win! \n Do you want to play again?", "Info",
 					JOptionPane.YES_NO_OPTION);
@@ -254,11 +271,16 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			Platform.runLater(() -> {
 				// https://stackoverflow.com/questions/21083945/how-to-avoid-not-on-fx-application-thread-currentthread-javafx-application-th
 				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/GameScreen.fxml"));
-					loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
-					Parent gameViewParent = loader.load();
-					gameScreen = new Scene(gameViewParent);
-					setController(loader.getController());
+					System.out.println("new person" + userName);
+					System.out.println(userName2);
+
+					if (userName2 == null) {
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/GameScreen.fxml"));
+						loader.setLocation(getClass().getResource("/client/GameScreen.fxml"));
+						Parent gameViewParent = loader.load();
+						gameScreen = new Scene(gameViewParent);
+						setController(loader.getController());
+					}
 
 					// To get the username from login
 					controller.passUserName(userName);
@@ -274,6 +296,12 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			});
 		} else if (evt.getNewValue().getClass().isInstance(new String())) {
 			System.out.println("displayPlayer2" + evt.getNewValue().toString());
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			controller.displayPlayer2(evt.getNewValue().toString());
 			userName2 = evt.getNewValue().toString();
 		} else if (evt.getNewValue().getClass().isInstance(new Integer(0))) {
@@ -282,7 +310,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	}
 
-	private void updateImg(String player1Pick, String player2Pick) {
+	private synchronized void updateImg(String player1Pick, String player2Pick) {
 		if (player2Pick.equals("rock")) {
 			controller.setImg2(new Image("client/rock.png"));
 		} else if (player2Pick.equals("paper")) {
@@ -299,7 +327,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		}
 	}
 
-	private void determineWinner(String player1Pick, String player2Pick) throws IOException {
+	private synchronized void determineWinner(String player1Pick, String player2Pick) throws IOException {
 		boolean win = false;
 		boolean draw = false;
 
@@ -360,14 +388,30 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	}
 
-	public void playAgain(int choice) throws IOException {
+	public synchronized void playAgain(int choice) throws IOException {
 		System.out.println("PLay Agin");
 		if (choice == 0) {
 			controller.setImg1(null);
 			player1Pick = null;
 			controller.setImg2(null);
 			player2Pick = null;
+
 			oos.writeObject("PLAYAGAIN");
+			socket.close();
+			oos.close();
+
+			socket = new Socket(ip, 3333);
+
+			// Create an object output stream to send the message to server.
+			OutputStream os = socket.getOutputStream();
+			oos = new ObjectOutputStream(os);
+			lis = new InputListener(0, socket, this);
+			new Thread(lis).start();
+
+		} else {
+			System.out.println("writeObjet(endgame)");
+			oos.writeObject("ENDGAME");
+
 		}
 	}
 
