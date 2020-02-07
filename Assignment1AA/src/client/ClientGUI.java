@@ -16,7 +16,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,25 +30,20 @@ import utility.GameContainer;
 import utility.InputListener;
 import utility.Message;
 import utility.Person;
-import utility.WaitingContainer;
 
 import java.util.*;
 
 /**
- * @author dwatson
+ * The ClientGUI opens a login screen and prompts the user for a user name and ip address to connect to a game.
+ * If the player is the first person to connect to the game, they are redirected to a waiting screen. If they
+ * are the second person to connect, both players will be directed to the game screen.
+ * @author Casey, Karman
  * @version 1.0
- * 
- *          To determine what your IP address in windows - open a command line
- *          dialog box and type at the prompt "ipconfig".
- * 
- *          in Linux type "ifconfig etho"
- * 
  */
 
 public class ClientGUI extends Application implements PropertyChangeListener {
 
-	Scene loginScene, menuScreen, gameScreen;
-	private Stage primaryStage;
+	//FXML Attributes
 	@FXML
 	private Button clearButton, connectButton, send;
 	@FXML
@@ -59,23 +53,29 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	@FXML
 	public TextArea chat, msg;
 
+	//Attributes
 	public String userName, userName2, player1Pick, player2Pick;
-
-	Container container;
+    private Stage primaryStage;
 	private String ip;
-
-	GameContainer controller;
-	Socket socket;
-	ObjectOutputStream oos = null;
-	ObjectInputStream ois = null;
-	InputListener lis;
-	FXMLLoader loader;
+	private Scene loginScene, gameScreen;
+	private Container container;
+	private GameContainer controller;
+	private Socket socket;
+	private ObjectOutputStream oos = null;
+	private ObjectInputStream ois = null;
+	private InputListener lis;
+	private FXMLLoader loader;
 
 	public static void main(String[] args) {
 		launch(args);
 
 	}
 
+//---------------------------------REGULAR METHODS-----------------------------------	
+	/**
+	 * Loads up the login screen
+	 * @param primaryStage Stage where the GUI will be set in
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -86,18 +86,29 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			Parent root = loader.load();
 
 			loginScene = new Scene(root, 400, 200);
-			// loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(loginScene);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	 /**
+     * Clears the username and ip textfields
+     * @param event The event that was triggered when the clear button was pressed
+     */
+    @FXML
+    public void handleClearButtonAction(ActionEvent event) {
+        displayName.setText("");
+        serverIP.setText("");
+    }
 
-	public static void disconnectServer() {
-
-	}
-
+	/**
+	 * Connecter the user to the server using the username and ip that they inputed in
+	 * the login screen
+	 * @param user The username that was given in the login screen
+	 * @param ip The ip that was given in the login screen
+	 */
 	public void connectServer(String user, String ip) {
 		this.ip = ip;
 		try {
@@ -120,22 +131,20 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	}
 
-	public GameContainer getController() {
-		return controller;
-	}
-
-	public void setController(GameContainer controller) {
-		this.controller = controller;
-	}
-
-	public void setContainer(Container container) {
-		this.container = container;
-	}
-
+	/**
+	 * Takes the message that the player wants to send and writes it to the other player
+	 * @param msg The message that was sent to the other player
+	 * @throws IOException
+	 */
 	public void writeMessage(Object msg) throws IOException {
 		oos.writeObject(msg);
 	}
 
+	/** 
+	 * Sends the choice the player has made to the other player
+	 * @param game A game object that holds the game information
+	 * @throws IOException
+	 */
 	public void writeGame(Object game) throws IOException {
 
 		String type = game.toString();
@@ -157,6 +166,12 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		oos.writeObject(game);
 	}
 
+//---------------------------------SYNCHRONIZED METHODS-----------------------------------
+	
+	/**
+	 * Writes the username to the other player
+	 * @param user current players username
+	 */
 	public synchronized void writeUser(String user) {
 		try {
 			Thread.sleep(300);
@@ -170,6 +185,11 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		}
 	}
 
+	/**
+	 * Whenever a player triggers an event that the other player needs to see, this method is called. Depending on
+	 * what is sent or triggered, an action will occur on the other players screen.
+	 * @param evt PropertyChangeEvent object 
+	 */
 	@Override
 	public synchronized void propertyChange(PropertyChangeEvent evt) {
 		// check for instance of
@@ -177,6 +197,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 		if (evt.getNewValue().toString().contains("WIN")) {
 			int result = JOptionPane.showConfirmDialog(null, "You lose \n Do you want to play again?", "Info",
 					JOptionPane.YES_NO_OPTION);
+			controller.hideButton();
 			try {
 				playAgain(result);
 			} catch (IOException e) {
@@ -190,7 +211,6 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			try {
 				playAgain(result);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -219,13 +239,13 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 				controller.setDisplayNames();
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.exit(0);
 		} else if (evt.getNewValue().toString().contains("LOSE")) {
 			int result = JOptionPane.showConfirmDialog(null, "You win! \n Do you want to play again?", "Info",
 					JOptionPane.YES_NO_OPTION);
+			controller.showButton();
 			try {
 				playAgain(result);
 			} catch (IOException e) {
@@ -240,18 +260,15 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			controller.showButton();
 			controller.setImg2(new Image("client/unknown.png"));
 			if (type.equals("rock")) {
-				// controller.setImg2(new Image("client/rock.png"));
 				player2Pick = "rock";
 			}
 			if (type.equals("paper")) {
-				// controller.setImg2(new Image("client/paper.png"));
 				player2Pick = "paper";
 			}
 			if (type.equals("scissors")) {
-				// controller.setImg2(new Image("client/scissors.jpg"));
 				player2Pick = "scissors";
 			}
-			System.out.println(player1Pick + " " + player2Pick);
+
 			if (player1Pick != null) {
 				updateImg(player1Pick, player2Pick);
 			}
@@ -267,12 +284,10 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			}
 
 		} else if (evt.getNewValue().getClass().isInstance(new Person())) {
-			System.out.println("TEST1");
+			
 			Platform.runLater(() -> {
 				// https://stackoverflow.com/questions/21083945/how-to-avoid-not-on-fx-application-thread-currentthread-javafx-application-th
-				try {
-					System.out.println("new person" + userName);
-					System.out.println(userName2);
+				try {		
 
 					if (userName2 == null) {
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/GameScreen.fxml"));
@@ -281,7 +296,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 						gameScreen = new Scene(gameViewParent);
 						setController(loader.getController());
 					}
-
+					
 					// To get the username from login
 					controller.passUserName(userName);
 					controller.getClient(this);
@@ -310,6 +325,11 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	}
 
+	/**
+	 * Updates the opposing player's GUI image with the other player's game choice
+	 * @param player1Pick Player one's game choice
+	 * @param player2Pick Player two's game choice
+	 */
 	private synchronized void updateImg(String player1Pick, String player2Pick) {
 		if (player2Pick.equals("rock")) {
 			controller.setImg2(new Image("client/rock.png"));
@@ -322,11 +342,17 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			oos.writeObject("updateImg");
 			determineWinner(player1Pick, player2Pick);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Determines the winner of the game based on each players choice of rock, paper or scissors.
+	 * Prompts the user whether or not they want to play again.
+	 * @param player1Pick Player one's game choice
+	 * @param player2Pick Player two's game choice
+	 * @throws IOException
+	 */
 	private synchronized void determineWinner(String player1Pick, String player2Pick) throws IOException {
 		boolean win = false;
 		boolean draw = false;
@@ -388,6 +414,14 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 
 	}
 
+	/**
+	 * 
+	 * Takes the players choice of whether or not they want to play again and either
+	 * lets them continue playing or closes their GUI
+	 * 
+	 * @param choice An integer of either 0 for yes and 1 for no
+	 * @throws IOException
+	 */
 	public synchronized void playAgain(int choice) throws IOException {
 		System.out.println("PLay Agin");
 		if (choice == 0) {
@@ -399,7 +433,7 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			oos.writeObject("PLAYAGAIN");
 			socket.close();
 			oos.close();
-
+			
 			socket = new Socket(ip, 3333);
 
 			// Create an object output stream to send the message to server.
@@ -409,36 +443,65 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 			new Thread(lis).start();
 
 		} else {
-			System.out.println("writeObjet(endgame)");
 			oos.writeObject("ENDGAME");
+			System.exit(0);
 
 		}
 	}
 
-	@FXML
-	public void handleClearButtonAction(ActionEvent event) {
-		displayName.setText("");
-		serverIP.setText("");
+	
+//-----------------------------------SETTERS AND GETTERS----------------------------------
+	
+	   /**
+     * Returns the GameContainer controller
+     * @return the instance of the GameContainer controller 
+     */
+    public GameContainer getController() {
+        return controller;
+    }
+
+    /**
+     * Sets the GameContainer controller
+     * @param controller The controller used to access methods in the GameContainer class
+     */
+    public void setController(GameContainer controller) {
+        this.controller = controller;
+    }
+
+    /**
+     * Sets the container
+     * @param container Where the controller is loaded into
+     */
+    public void setContainer(Container container) {
+        this.container = container;
+    }
+
+	
+	/**
+	 * Set the primary stage to the desired window
+	 * @param window The current window
+	 */
+	public void setWindow(Stage window)
+	{
+	    this.primaryStage = window;
 	}
 
-	public ObjectOutputStream getOos() {
-		return oos;
-	}
-
-	public void setOos(ObjectOutputStream oos) {
-		this.oos = oos;
-	}
-
-	public void getWindow(Stage window) {
-		this.primaryStage = window;
-	}
-
+	/**
+	 * Gets the current players username
+	 * @return The players username
+	 */
 	public String getUserName() {
 		return userName;
 	}
 
+	/**
+	 * Sets the current players username
+	 * @param userName The players username
+	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+
 
 }

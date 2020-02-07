@@ -20,13 +20,10 @@ public class GameContainer implements Initializable {
 
 	@FXML
 	public TextArea chat, msg;
-
 	@FXML
-	public Text player1, player2;
-	
+	public Text player1, player2;	
 	@FXML
 	public ImageView img1, img2;
-	
 	@FXML 
 	public Button rock, paper, scissors;
 
@@ -53,7 +50,6 @@ public class GameContainer implements Initializable {
 		Date timeStamp = new Date();
 		message2.setMsg(msg.getText());
 		message2.setTimeStamp(timeStamp);
-		@SuppressWarnings("deprecation")
 		String msgChat = message2.toString();
 		chat.appendText(msgChat);
 		msg.clear();
@@ -172,14 +168,6 @@ public class GameContainer implements Initializable {
 		img2.setImage(pic);
 	
 	}
-	
-	
-	public void loadGUI() {
-		
-	}
-
-   
-	
 	
 	
 }

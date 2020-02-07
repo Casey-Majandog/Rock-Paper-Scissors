@@ -15,8 +15,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * A controller that contains the methods for the LoginScreen.fxml file
+ * @author Casey, Karman
+ * @version 1.0
+ */
 public class Container {
-	// Attributes
+	
+    //FXML Attributes
 	@FXML
 	private Button clearButton, connectButton, send;
 	@FXML
@@ -25,23 +31,33 @@ public class Container {
 	private MenuItem quitMenu;
 	@FXML
 	private ClientGUI client;
-
-	private Stage window;
-
-//    private Message message1, message2;
 	@FXML
-	private Message message1;
-	private String userName = "No user";
+    private Message message1;
 
+	//Attributes
+	private Stage window;
+	private String userName = "No user";
 	int socketNum;
 
-	// Methods
+	
+	//Methods
+	
+	/**
+	 * Clears the username and ip text fields
+	 * @param event Event that triggered the method
+	 */
 	@FXML
 	public void handleClearButtonAction(ActionEvent event) {
+	    
 		displayName.setText("");
 		serverIP.setText("");
 	}
 
+	/**
+	 * Connects the player to the server, gets their username and then sends them to the waiting screen
+	 * @param event Event that triggered the method
+	 * @throws IOException
+	 */
 	@FXML
 	public void handleConnectButtonAction(ActionEvent event) throws IOException {
 		client = new ClientGUI();
@@ -59,39 +75,35 @@ public class Container {
 
 		// get existing window from loginScene
 		window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		client.getWindow(window);
+		client.setWindow(window);
 		window.setScene(gameScene);
 		window.show();
 
 	}
 
-	@FXML
-	public void handleQuitMenuAction(ActionEvent event) {
-		Platform.exit();
-		// http://www.learningaboutelectronics.com/Articles/How-to-add-functionality-to-a-menu-in-JavaFX.php
-	}
 
-	@FXML
-	public void handleDisconnectButtonAction(ActionEvent event) {
-		Platform.exit();
-		// http://www.learningaboutelectronics.com/Articles/How-to-add-functionality-to-a-menu-in-JavaFX.php
-	}
-
+	/**
+	 * Sets the username parameter in the message object
+	 * @param message message object
+	 */
 	public void initializeMessage(Message message) {
 		message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
-		System.out.println("Message has been set: " + message1.toString());
 	}
 
+	/**
+	 * Gets the players username
+	 * @return players username
+	 */
 	public String getUserName() {
 		return userName;
 	}
 
+	/**
+	 * Sets the players username
+	 * @param userName the players username
+	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public Stage sendWindow() {
-		return window;
 	}
 
 }

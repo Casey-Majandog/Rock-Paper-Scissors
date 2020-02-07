@@ -12,9 +12,15 @@ import utility.InputListener;
 import utility.Message;
 import utility.Person;
 
+/**
+ * Takes the sockets created in the server and instantiates input listeners and object output streams.
+ * Communication between the two GUI's are handled here.
+ * @author Casey, Karman
+ * @version 1.0
+ */
 public class ClientHandler implements Runnable, PropertyChangeListener
 {
-    //attributes
+    //Attributes
     private Socket socket1;
     private Socket socket2;
     private ObjectOutputStream oos1;
@@ -22,9 +28,13 @@ public class ClientHandler implements Runnable, PropertyChangeListener
     private InputListener lis1;
     private InputListener lis2;
   
-
+    //Methods
     
-//Two sockets come from the server
+    /**
+     * Takes the sockets from the server and creates object output streams and input listeners
+     * @param socket1 First socket from server
+     * @param socket2 Second socket from server
+     */
     public ClientHandler(Socket socket1, Socket socket2)
     {
         this.socket1 = socket1;
@@ -45,9 +55,10 @@ public class ClientHandler implements Runnable, PropertyChangeListener
         
         
     }
-/**
- * Reading and writing occurs in the run code
- */
+
+    /**
+     * Start the threads and chooses a random player two go first
+     */
     @Override
     public void run()
     {
@@ -80,6 +91,9 @@ public class ClientHandler implements Runnable, PropertyChangeListener
        
     }
     
+    /**
+     * Where communication between the two players occur. Sends message to the opposing player.
+     */
     public synchronized void propertyChange(PropertyChangeEvent event)
     {
        InputListener lis = (InputListener) event.getSource();
@@ -102,20 +116,4 @@ public class ClientHandler implements Runnable, PropertyChangeListener
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

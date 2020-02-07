@@ -9,8 +9,8 @@ import java.io.*;
 import java.util.*;
 
 /**
- * @author dwatson
- * @version 1.0
+ * @author dwatson, Casey, Karman
+ * @version 1.1
  * Sep 8, 2008
  *
  * Class Description: A basic message class that can be transported across
@@ -39,6 +39,7 @@ public class Message implements Serializable
 	}
 
 	/**
+	 * Gets the current user
 	 * @return the user
 	 */
 	public String getUser()
@@ -47,6 +48,7 @@ public class Message implements Serializable
 	}
 
 	/**
+	 * Sets the current user
 	 * @param user the user to set
 	 */
 	public void setUser(String user)
@@ -55,6 +57,7 @@ public class Message implements Serializable
 	}
 
 	/**
+	 * Gets the message
 	 * @return the msg
 	 */
 	public String getMsg()
@@ -63,6 +66,7 @@ public class Message implements Serializable
 	}
 
 	/**
+	 * Sets the message
 	 * @param msg the msg to set
 	 */
 	public void setMsg(String msg)
@@ -71,6 +75,7 @@ public class Message implements Serializable
 	}
 
 	/**
+	 * Gets the current time 
 	 * @return the timeStamp
 	 */
 	public Date getTimeStamp()
@@ -79,6 +84,7 @@ public class Message implements Serializable
 	}
 
 	/**
+	 * Sets the current time
 	 * @param timeStamp the timeStamp to set
 	 */
 	public void setTimeStamp(Date timeStamp)
@@ -89,7 +95,6 @@ public class Message implements Serializable
 	//Operational Methods
 	public String toString()
 	{
-	    //Comment
 		return "[" + getTimeStamp().getHours() + ":" + getTimeStamp().getMinutes() + ":"
 				+ getTimeStamp().getSeconds() + "] " + getUser() + ": " + getMsg() + "\n";
 	}
