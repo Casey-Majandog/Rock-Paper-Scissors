@@ -40,7 +40,6 @@ import java.util.*;
  * @author Casey, Karman
  * @version 1.0
  */
-
 public class ClientGUI extends Application implements PropertyChangeListener {
 
 	//FXML Attributes
@@ -66,12 +65,15 @@ public class ClientGUI extends Application implements PropertyChangeListener {
 	private InputListener lis;
 	private FXMLLoader loader;
 
-	public static void main(String[] args) {
-		launch(args);
-
-	}
+	
 
 //---------------------------------REGULAR METHODS-----------------------------------	
+	
+	public static void main(String[] args) {
+        launch(args);
+
+    }
+	
 	/**
 	 * Loads up the login screen
 	 * @param primaryStage Stage where the GUI will be set in

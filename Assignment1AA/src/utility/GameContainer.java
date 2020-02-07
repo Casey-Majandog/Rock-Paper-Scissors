@@ -16,8 +16,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+/**
+ * A controller that contains the methods for the GameScreen.fxml file
+ * @author Casey, Karman
+ * @version 1.0
+ */
 public class GameContainer implements Initializable {
 
+
+    //FXML Attributes
 	@FXML
 	public TextArea chat, msg;
 	@FXML
@@ -27,22 +34,20 @@ public class GameContainer implements Initializable {
 	@FXML 
 	public Button rock, paper, scissors;
 
+	//Attributes
 	public int socketNum;
+	private ClientGUI client;
+	private Game type;
+	private String user;
 
-	private Message message1;
+//---------------------------------METHODS-----------------------------------   	
 
-	ClientGUI client;
-
-	Game type;
-	
-	String user;
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * Prints the message in the players chat box and then sends that message
+	 * to the opposing player
+	 * @param e Event that triggered the method
+	 * @throws IOException
+	 */
 	@FXML
 	public void printMessage(ActionEvent e) throws IOException {
 		Message message2 = new Message();
@@ -57,6 +62,11 @@ public class GameContainer implements Initializable {
 
 	}
 
+	/**
+	 * Tells the opposing player the players game choice
+	 * @param e Event that triggered the method
+	 * @throws IOException
+	 */
 	@FXML
 	public void clickGame(ActionEvent e) throws IOException {
 		String id = ((Control) e.getSource()).getId();
@@ -66,27 +76,48 @@ public class GameContainer implements Initializable {
 
 	}
 	
+	@Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+
+    }
+	
+	/**
+	 * Appends the opposing player sent message to the players chat box
+	 * @param msg The message sent from the opposing player
+	 */
+	public void appendMessage(Message msg) {
+	        chat.appendText(msg.toString());
+
+	    }
+	
+	/**
+	 * Sets the display names on the games screen
+	 */
 	public void setDisplayNames() {
 		player1.setText(user);
 		client.writeUser(user);
 	}
-
-	public TextArea getChat() {
-		return chat;
-	}
-
-	public void setChat(TextArea chat) {
-		this.chat = chat;
-	}
-
-	public Message getMessage1() {
-		return message1;
-	}
-
-	public void setMessage1(Message message1) {
-		this.message1 = message1;
-	}
-
+	
+	/**
+	 * Sets player 1's display name
+	 * @param user1 Player 1's username
+	 */
+	public void displayPlayer1(String user1){
+        player1.setText(user1);
+    }
+    
+	/**
+	 * Sets player 2's display name
+	 * @param user2 Player 2's username
+	 */
+    public synchronized void displayPlayer2(String user2){
+        player2.setText(user2);
+    }
+	
+	/**
+	 * Disables the game buttons on the game screen GUI
+	 */
 	public void hideButton()
 	{
 	    rock.setDisable(true);
@@ -94,6 +125,9 @@ public class GameContainer implements Initializable {
 	    scissors.setDisable(true);
 	}
 	
+	/**
+	 * Enables the game buttons on the game screen GUI
+	 */
 	public void showButton()
     {
         rock.setDisable(false);
@@ -101,69 +135,84 @@ public class GameContainer implements Initializable {
         scissors.setDisable(false);
     }
 	
+	/**
+	 * Passes the username into the controller
+	 * @param user A players username
+	 */
+	public void passUserName(String user) {
+	        this.user = user;
+	    }
 	
+//---------------------------------GETTERS AND SETTERS----------------------------------- 
+	/**
+	 * Get player 1
+	 * @return player 1 username
+	 */
 	public Text getPlayer1() {
 		return player1;
 	}
 
+	/**
+	 * Get player 2
+	 * @return player 2 username
+	 */
 	public Text getPlayer2() {
 		return player2;
 	}
 	
+	/**
+	 * Sets player 1's username
+	 * @param player1 text area on the GUI
+	 */
 	public void setPlayer1(Text player1){
         this.player1 = player1;
         player1.setText(user);
     }
 	
+	/**
+	 * Sets player 1's username
+	 * @param player2 player2 text area on the GUI
+	 */
 	public void setPlayer2(Text player2){
 	    this.player2 = player2;   
 	}
 	
-	public void displayPlayer1(String user1){
-        player1.setText(user1);
-    }
-	
-	public synchronized void displayPlayer2(String user2){
-        player2.setText(user2);
-    }
-	
-	public int getSocketNum() {
-		return socketNum;
-	}
-
-	public void setSocketNum(int socketNum) {
-		this.socketNum = socketNum;
-	}
-
-	public void appendMessage(Message msg) {
-		chat.appendText(msg.toString());
-
-	}
-
-	public void initializeMessage(Message message) {
-		message1 = new Message(message.getUser(), message.getMsg(), message.getTimeStamp());
-	}
-
+	/**
+	 * Gets the client object
+	 * @param newClient client object
+	 */
 	public void getClient(Object newClient) {
 		this.client = (ClientGUI) newClient;
 	}
 	
-	public void passUserName(String user) {
-		this.user = user;
-	}
-
+	/**
+	 * Gets player 1's image display
+	 * @return player 1 image display
+	 */
 	public ImageView getImg1() {
 		return img1;
 	}
 
+	/**
+	 * Set player 1's image game choice on GUI
+	 * @param pic contains the game image
+	 */
 	public void setImg1(Image pic) {
 		img1.setImage(pic);
 	}
 
+	/**
+	 *Gets player 1's image display
+	 * @return player 2 image display
+	 */
 	public ImageView getImg2() {
 		return img2;
 	}
 
+	/**
+	 * Set player 2's image game choice on GUI
+	 * @param pic pic contains the game image
+	 */
 	public void setImg2(Image pic) {
 		img2.setImage(pic);
 	

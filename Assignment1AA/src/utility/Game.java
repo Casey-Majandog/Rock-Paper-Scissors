@@ -10,21 +10,34 @@ import java.io.Serializable;
  */
 public class Game implements Serializable
 {
-
+    
     //Constants
     private static final long serialVersionUID = 7660195669243432591L;
+    
     //Attributes
     private String type;
-
+    
+    //Constructors
+    
+    /**
+     * Constructor that takes in the players choice
+     * @param type players choice in game
+     */
     public Game(String type)
     {
         super();
         this.type = type;
     }
 
+    /**
+     * Default constructor
+     */
     public Game() {
     	type = "";
     }
+    
+    
+    //Methods
     
     /*
      * Gets the type of rock, paper or scissors
@@ -43,7 +56,9 @@ public class Game implements Serializable
         this.type = type;
     }
     
+    
     //Operational Methods
+    
     /**
      * Prints out the type
      */

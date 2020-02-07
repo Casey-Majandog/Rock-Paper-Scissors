@@ -27,10 +27,20 @@ public class Message implements Serializable
 	private Date			timeStamp;
 	
 	//Constructors
+	
+	/**
+	 * Default constructor
+	 */
 	public Message()
 	{
 	}
 	
+	/**
+	 * Constructor that takes in the players username, message, and time the message was sent
+	 * @param user Players username
+	 * @param msg Players sent message
+	 * @param timeStamp Time message was sent
+	 */
 	public Message(String user, String msg, Date timeStamp)
 	{
 		this.user = user;
@@ -93,6 +103,10 @@ public class Message implements Serializable
 	}
 	
 	//Operational Methods
+	
+	/**
+	 * Prints out the contents of the message object
+	 */
 	public String toString()
 	{
 		return "[" + getTimeStamp().getHours() + ":" + getTimeStamp().getMinutes() + ":"
