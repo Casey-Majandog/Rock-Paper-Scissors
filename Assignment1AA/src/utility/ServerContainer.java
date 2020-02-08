@@ -19,7 +19,7 @@ public class ServerContainer
     private Text status;
     
     //Attributes
-    Thread t1 = new Thread(new Server());
+    private Thread t1 = new Thread(new Server());
     
     //Methods
     

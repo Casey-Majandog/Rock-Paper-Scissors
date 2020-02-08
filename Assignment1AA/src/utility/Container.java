@@ -37,9 +37,7 @@ public class Container {
 	//Attributes
 	private Stage window;
 	private String userName = "No user";
-	int socketNum;
 
-	
 	//Methods
 	
 	/**

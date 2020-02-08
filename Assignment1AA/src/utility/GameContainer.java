@@ -35,7 +35,6 @@ public class GameContainer implements Initializable {
 	public Button rock, paper, scissors;
 
 	//Attributes
-	public int socketNum;
 	private ClientGUI client;
 	private Game type;
 	private String user;
